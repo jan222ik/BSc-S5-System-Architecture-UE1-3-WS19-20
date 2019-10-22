@@ -7,6 +7,6 @@ class SourceImpl(output: Writeable<String>?): Source<String>(output) {
 
     private var i : Int = 0;
     override fun read(): String? {
-        return if (i < 3) "Demo TEXT".also { i++ } else null
+        return if (i < 3) "Demo TEXT $i".also { i++ } else null
     }
 }

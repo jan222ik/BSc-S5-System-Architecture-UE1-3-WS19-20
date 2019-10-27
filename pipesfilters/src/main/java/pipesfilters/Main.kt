@@ -24,6 +24,9 @@ class Main {
             val sourceImpl = SourceImpl(simplePipe, File("Z:\\Users\\jan22\\CodeProjects\\S5---System-Architecture\\pipesfilters\\src\\main\\resources\\aliceInWonderland.txt"))
             sourceImpl.run()
 
+            val freqWords = MostFrequentWordsTrie()
+                    .also { it.addFromFile(File("pipesfilters/src/main/resources/frequentEnglishWords.txt"),  400) }
+
         }
     }
 

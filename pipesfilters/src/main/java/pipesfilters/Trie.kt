@@ -1,6 +1,6 @@
 package pipesfilters
 
-class Trie {
+open class Trie {
 
     private val root = TrieNode();
 

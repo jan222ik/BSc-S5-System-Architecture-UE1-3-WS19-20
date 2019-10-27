@@ -2,20 +2,20 @@ package pipesfilters.util
 
 open class Trie {
 
-    private val root = TrieNode();
+    private val root = TrieNode()
 
-    public fun addWord(word: String) {
+    fun addWord(word: String) {
         root.addWord(word, 0)
     }
 
-    public fun isWord(s: String): Boolean {
+    fun isWord(s: String): Boolean {
         return root.containsWord(s, 0)
     }
 
 
     class TrieNode {
         private var chars: HashMap<Char, TrieNode> = HashMap()
-        private var isWord: Boolean = false;
+        private var isWord: Boolean = false
 
         fun addWord(word: String, index: Int) {
             if (index == word.length) {

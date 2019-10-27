@@ -5,6 +5,7 @@ import java.util.function.Consumer
 import kotlin.collections.HashMap
 
 
+@Suppress("unused")
 class ArgumentParser {
 
     private var parsedArgs = HashSet<String>()

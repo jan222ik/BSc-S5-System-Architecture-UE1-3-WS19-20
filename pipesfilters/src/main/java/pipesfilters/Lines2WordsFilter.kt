@@ -6,9 +6,9 @@ import pipesfilters.framework.pmp.filter.DataTransformationFilter3
 import pipesfilters.framework.pmp.interfaces.Writeable
 import java.util.*
 
-class Lines2Words(output: Writeable<Word>) : DataTransformationFilter3<Line, Word>(output) {
+class Lines2WordsFilter(output: Writeable<Word>) : DataTransformationFilter3<Line, Word>(output) {
     override fun process(line: Line?): ArrayList<Word>? {
-        val content = line?.content;
+        val content = line?.content
         @Suppress("LiftReturnOrAssignment")
         if (content != null) {
             val aList = ArrayList<Word>()

@@ -43,20 +43,23 @@ class Main {
                     "\n$tabs File {${outputFile.absolutePath}}")
             logger.debug("Init Pipe and Filter Objects")
             val sourceImpl = SourceImpl(
-                    SimplePipe<Line>(
+                    LinePipe(
                             SanitizerFilter(
-                                    SimplePipe<Line>(
+                                    LinePipe(
                                             Lines2WordsFilter(
                                                     SimplePipe<Word>(
                                                             WordCirclerFilter(
-                                                                    SimplePipe<Line>(
-                                                                            Writeable<Line> { logger.info(it) }
+                                                                    LinePipe(
+                                                                            Writeable { logger.info(it) },
+                                                                            "Cyc > out"
                                                                     )
                                                             )
                                                     )
-                                            )
+                                            ),
+                                            "San > Words"
                                     )
-                            ) as Writeable<Line>
+                            ) as Writeable<Line>,
+                            "Raw > San"
                     ),
                     inputFile
             )

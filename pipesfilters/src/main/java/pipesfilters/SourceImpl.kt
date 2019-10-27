@@ -1,10 +1,11 @@
 package pipesfilters
 
+import pipesfilters.dataobjects.Line
 import pipesfilters.framework.pmp.filter.Source
 import pipesfilters.framework.pmp.interfaces.Writeable
 import java.io.File
 
-class SourceImpl(output: Writeable<RawLine>, private var file: File): Source<RawLine>(output) {
+class SourceImpl(output: Writeable<Line>, private var file: File): Source<Line>(output) {
 
     private lateinit var lines : List<String>;
     private var indexNr: Int = 0;
@@ -15,9 +16,9 @@ class SourceImpl(output: Writeable<RawLine>, private var file: File): Source<Raw
         }
     }
 
-    override fun read(): RawLine? {
+    override fun read(): Line? {
         return if (indexNr < lines.size) {
-            RawLine(indexNr, lines[indexNr]).also { indexNr++ }
+            Line(indexNr, lines[indexNr]).also { indexNr++ }
         } else {
             null
         }

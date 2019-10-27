@@ -1,4 +1,4 @@
-package pipesfilters
+package pipesfilters.dataobjects
 
 data class Word(
         val lineNr: Int,

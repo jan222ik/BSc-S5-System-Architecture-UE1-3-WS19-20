@@ -1,11 +1,13 @@
 package pipesfilters
 
+import pipesfilters.dataobjects.Line
+import pipesfilters.dataobjects.Word
 import pipesfilters.framework.pmp.filter.DataTransformationFilter3
 import pipesfilters.framework.pmp.interfaces.Writeable
 import java.util.*
 
-class Lines2Words(output: Writeable<Word>) : DataTransformationFilter3<RawLine, Word>(output) {
-    override fun process(line: RawLine?): ArrayList<Word>? {
+class Lines2Words(output: Writeable<Word>) : DataTransformationFilter3<Line, Word>(output) {
+    override fun process(line: Line?): ArrayList<Word>? {
         val content = line?.content;
         @Suppress("LiftReturnOrAssignment")
         if (content != null) {

@@ -1,10 +1,11 @@
 package pipesfilters
 
+import pipesfilters.dataobjects.Line
 import pipesfilters.framework.pmp.filter.DataTransformationFilter1
 import pipesfilters.framework.pmp.interfaces.Writeable
 
-class SanitizerFilter(output: Writeable<RawLine>) : DataTransformationFilter1<RawLine>(output) {
-    override fun process(line: RawLine?) {
+class SanitizerFilter(output: Writeable<Line>) : DataTransformationFilter1<Line>(output) {
+    override fun process(line: Line?) {
         val c : String? = line?.content;
         if (c != null && c.isNotEmpty()) {
             var san: String = "";

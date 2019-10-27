@@ -1,4 +1,4 @@
-package pipesfilters
+package pipesfilters.util
 
 open class Trie {
 

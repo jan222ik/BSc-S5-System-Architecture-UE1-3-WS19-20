@@ -1,6 +1,6 @@
-package pipesfilters
+package pipesfilters.dataobjects
 
-data class RawLine(
+data class Line(
         val number: Int,
         var content: String?
 )

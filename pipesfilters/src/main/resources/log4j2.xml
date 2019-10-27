@@ -7,7 +7,7 @@
     </Appenders>
     <Loggers>
         <!-- avoid duplicated logs with additivity=false -->
-        <Root level="ALL" additivity="false">
+        <Root level="DEBUG" additivity="false">
             <AppenderRef ref="LogToConsole"/>
         </Root>
     </Loggers>

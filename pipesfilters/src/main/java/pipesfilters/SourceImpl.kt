@@ -18,7 +18,7 @@ class SourceImpl(output: Writeable<Line>, file: File): Source<Line>(output) {
 
     override fun read(): Line? {
         return if (indexNr < lines.size) {
-            Line(indexNr, lines[indexNr]).also { indexNr++ }
+            Line(indexNr + 1, lines[indexNr]).also { indexNr++ }
         } else {
             null
         }

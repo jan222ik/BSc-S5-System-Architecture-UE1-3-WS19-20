@@ -4,10 +4,13 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import pipesfilters.dataobjects.Line
 import pipesfilters.dataobjects.Word
+import pipesfilters.framework.pmp.filter.DataCompositionFilter
 import pipesfilters.framework.pmp.interfaces.Writeable
 import pipesfilters.framework.pmp.pipes.SimplePipe
 import pipesfilters.util.ArgumentParser
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Main {
     companion object {
@@ -47,12 +50,15 @@ class Main {
                             SanitizerFilter(
                                     LinePipe(
                                             Lines2WordsFilter(
-                                                    SimplePipe<Word>(
+                                                    SimplePipe<ArrayList<Word>>(
                                                             WordCirclerFilter(
                                                                     LinePipe(
-                                                                            Writeable { logger.info(it) },
-                                                                            "Cyc > out"
-                                                                    )
+                                                                            DataCompositionFilterImpl(
+                                                                                    SimplePipe<LinkedList<Line>>(
+                                                                                            SinkImpl(outputFile)
+                                                                                    )
+                                                                            ), "cyl > sort"
+                                                                    ), freqWords
                                                             )
                                                     )
                                             ),

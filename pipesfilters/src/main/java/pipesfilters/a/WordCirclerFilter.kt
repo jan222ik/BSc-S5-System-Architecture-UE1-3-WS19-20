@@ -1,8 +1,7 @@
-package pipesfilters
+package pipesfilters.a
 
 import pipesfilters.dataobjects.Line
 import pipesfilters.dataobjects.Word
-import pipesfilters.framework.pmp.filter.DataCompositionFilter
 import pipesfilters.framework.pmp.filter.DataTransformationFilter3
 import pipesfilters.framework.pmp.interfaces.Writeable
 import java.util.*

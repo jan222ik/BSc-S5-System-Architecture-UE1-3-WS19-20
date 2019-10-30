@@ -1,4 +1,4 @@
-package pipesfilters
+package pipesfilters.a
 
 import pipesfilters.dataobjects.Line
 import pipesfilters.framework.pmp.filter.DataCompositionFilter
@@ -9,9 +9,11 @@ class DataCompositionFilterImpl(output: Writeable<LinkedList<Line>>) : DataCompo
     override fun fillEntity(nextVal: Line?, entity: LinkedList<Line>?): Boolean {
         if (nextVal != null) {
             entity?.add(nextVal)
-            entity?.sortBy { line: Line -> line.content }
             return false
         } else {
+            println("entity = ${entity?.first}")
+            entity?.addLast(entity.removeAt(0))
+            entity?.sortWith(nullsLast(compareBy({ it.content }, {it.number})))
             return true
         }
     }

@@ -6,7 +6,6 @@
         </Console>
     </Appenders>
     <Loggers>
-        <!-- avoid duplicated logs with additivity=false -->
         <Root level="Debug" additivity="false">
             <AppenderRef ref="LogToConsole"/>
         </Root>

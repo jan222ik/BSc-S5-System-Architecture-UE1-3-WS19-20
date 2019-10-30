@@ -1,4 +1,4 @@
-package pipesfilters
+package pipesfilters.a
 
 import pipesfilters.dataobjects.Line
 import pipesfilters.framework.pmp.filter.Source

@@ -1,4 +1,4 @@
-package pipesfilters
+package pipesfilters.a
 
 import pipesfilters.dataobjects.Line
 import pipesfilters.framework.pmp.filter.DataTransformationFilter1
@@ -15,11 +15,11 @@ class SanitizerFilter(output: Writeable<Line>) : DataTransformationFilter1<Line>
                 char = c[i].toString()
                 sanitizedStr += when (char) {
                     "\n", "\t", "!", "\"", "#", "$", "%", "&", "(", ")",
-                    "*", "+", ",", "-", ".", "/", ":", ";", "<", "=",
+                    "*", "+", ",", ".", "/", ":", ";", "<", "=",
                     ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{",
                     "|", "}", "~", "·"
                         -> " "
-                    "'" -> if (prev.toString().matches("""[a-zA-Z]""".toRegex())) char else ""
+                    "'", "-" -> if (prev.toString().matches("""[a-zA-Z]""".toRegex())) char else ""
                     else -> char
                 }
                 prev = char.toCharArray()[0]

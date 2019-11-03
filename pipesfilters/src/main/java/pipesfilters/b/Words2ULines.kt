@@ -44,7 +44,3 @@ class Words2ULines(output: Writeable<Line>, private val lineLength: Int) : DataC
         return Line(lineNumber, null)
     }
 }
-
-
-//Hey, ich habe grade einen komischen bug mit Kotlin. Ich kann den folgenden Code nicht compilieren.
-//Evtl kannst du helfen :d Es liegt aufjeden fall an der Mehtode, wenn sie leer ist gehts.

@@ -1,9 +1,19 @@
-Starting: java -jar pipesilters.jar (when in same directory)
+Starting: java -jar pipesfilters.jar (when in same directory)
 Program arguments:  -overwrite (output file is overwritten when exists)
-                    -line=100 (desired length of lines for task b in characters,
-                     minimum: longest uninterrupted (no whitespaces) string + 1)
+                    -line=100 (desired length of lines for task b in characters, minimum: longest uninterrupted (no whitespaces) string + 1)
                     layout=CENTER (desired alignment of text; allowed values: LEFT, CENTER, RIGHT)
                     a (execute pipeline from task a -> only index)
-                    b (execute pipelines from task b -> index and aligned text)
+                    b (execute pipeline from task b -> index and aligned text)
 
 Solution for filtering out frequently used words at beginning of circular shifts:
+Happens in the WordCirclerFilter (since the shift only needs to be discarded when the frequent word is at the beginning of a shift).
+The check is done by a self-written class, MostFrequentWordsTrie. A trie is a kind of search tree that is usually used to search for strings.
+The MostFrequentWordsTrie extends the Trie-class (our own implementation of a trie).
+The Trie-class can add words and check whether a string is contained in the tree.
+The MostFrequentWordsTrie gets a file and an integer as parameters. The file is the file containing the most frequent words to filter,
+the integer is the bound for the frequency. Words that appear with less frequency than this bound are not considered when checking for
+frequent words at the beginning of shifts. The MostFrequentWordsTrie uses these parameters in its only added method, addWordsFromFile.
+This method reads all lines from a file and matches said lines with a regex. If the regex matches and the number in the frequency column
+of the line is greater than the lowerFrequencyBound parameter, the word is added to the Trie.
+While performing the circular shifts in the WordCirclerFilter, a MostFrequentWordTrie is used to check whether the word at the beginning of
+a shift is in the trie or not. If it is not in the trie, the shifted line is used further. Otherwise, the line is not used and disappears.

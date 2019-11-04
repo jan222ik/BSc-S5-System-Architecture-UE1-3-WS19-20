@@ -1,5 +1,7 @@
 .idea/
 */target/
+*/out/
+*/auxil/
 *.iml
 pipesfilters/framework/pmp/
 !pipesfilters/framework/info.txt

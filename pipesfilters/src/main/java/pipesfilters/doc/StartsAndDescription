@@ -1,6 +1,34 @@
-Starting: java -jar pipesilters.jar (when in same directory)
-Program arguments:  -overwrite (output file is overwritten when exists)
-                    -line=100 (desired length of lines for task b, minimum of longest uninterrupted (no whitespaces) string + 1)
-                    -alignment=CENTER (desired alignment of text; allowed values: LEFT, CENTER, RIGHT)
+Starting: java -jar pipesfilters.jar (when in same directory)
+Program arguments:  -overwrite (output file is overwritten when exists in same directory as jar)
+                    -input="exampleInput.txt" (file to be indexed, can be full or relative path)
+                    -freqWords="exampleFreqWords.txt" (file with the frequently used english words to filter, can be full or relative path)
+                    -freqLower=150 (number for frequency limit for frequently used words, words with frequency less than this number won't be considered, default:100)
+                    -line=100 (desired length of lines for task b in characters, minimum: longest uninterrupted (no whitespaces) string + 1, default:120)
+                    -layout=CENTER (desired alignment of text; allowed values: LEFT, CENTER, RIGHT, default: CENTER)
                     a (execute pipeline from task a -> only index)
-                    b (execute pipelines from task b -> index and aligned text)
+                    b (execute pipeline from task b -> index and aligned text)
+
+                    Mandatory: -input, -freqWords, either a or b (otherwise, there will be no output)
+
+Example start commands (assuming console is used in same directory as jar):
+java -jar pipesfilters.jar -overwrite -input=aliceInWonderland.txt -freqWords=frequentEnglishWords.txt a
+(if the input file and the frequent words file are in the same directory as the jar and former output exists)
+
+java -jar pipesfilters.jar -overwrite -input="C:\Users\Matt\IdeaProjects\S5SysArch1\pipesfilters\out\artifacts\pipesfilters_jar\aliceInWonderland.txt" -freqWords="C:\Users\Matt\IdeaProjects\S5SysArch1\pipesfilters\out\artifacts\pipesfilters_jar\frequentEnglishWords.txt" b
+(if the input file and the frequent words file are not in the same directory and an output file already exists)
+
+java -jar pipesfilters.jar -overwrite -input=aliceInWonderland.txt -freqWords=frequentEnglishWords.txt -freqLower=200 -line=120 -layout=RIGHT b
+(files in same directory, output shall be overwritten, set lower bound of frequency to 200, length of line in chars to 120, layout to right-bound and use the pipeline from task b)
+
+Solution for filtering out frequently used words at beginning of circular shifts:
+Happens in the WordCirclerFilter (since the shift only needs to be discarded when the frequent word is at the beginning of a shift).
+The check is done by a self-written class, MostFrequentWordsTrie. A trie is a kind of search tree that is usually used to search for strings.
+The MostFrequentWordsTrie extends the Trie-class (our own implementation of a trie).
+The Trie-class can add words and check whether a string is contained in the tree.
+The MostFrequentWordsTrie gets a file and an integer as parameters. The file is the file containing the most frequent words to filter,
+the integer is the bound for the frequency. Words that appear with less frequency than this bound are not considered when checking for
+frequent words at the beginning of shifts. The MostFrequentWordsTrie uses these parameters in its only added method, addWordsFromFile.
+This method reads all lines from a file and matches said lines with a regex. If the regex matches and the number in the frequency column
+of the line is greater than the lowerFrequencyBound parameter, the word is added to the Trie.
+While performing the circular shifts in the WordCirclerFilter, a MostFrequentWordTrie is used to check whether the word at the beginning of
+a shift is in the trie or not. If it is not in the trie, the shifted line is used further. Otherwise, the line is not used and disappears.

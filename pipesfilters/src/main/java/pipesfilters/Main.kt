@@ -1,5 +1,6 @@
 package pipesfilters
 
+
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import pipesfilters.a.*
@@ -20,7 +21,7 @@ class Main {
             logger.debug("Main Start")
             val args = ArgumentParser().also { it.parseArgs(a.asList(), '=') }
             val lineLength = args.getArgValue("-line", "120").toInt()
-            val alignment = Layout.valueOf(args.getArgValue("layout", Layout.CENTER.name))
+            val alignment = Layout.valueOf(args.getArgValue("-layout", Layout.CENTER.name).toUpperCase())
             val resPath = "pipesfilters/src/main/resources/"
             val inputFile = File(args.getArgValue("-input", resPath + "aliceInWonderland.txt"))
             //val inputFile2 = File(args.getArgValue("-input", resPath + "test0.txt"))

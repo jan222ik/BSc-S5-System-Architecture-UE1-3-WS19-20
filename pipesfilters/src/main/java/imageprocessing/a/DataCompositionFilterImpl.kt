@@ -1,8 +1,8 @@
-package pipesfilters.a
+package imageprocessing.a
 
-import pipesfilters.dataobjects.Line
-import pipesfilters.framework.pmp.filter.DataCompositionFilter
-import pipesfilters.framework.pmp.interfaces.Writeable
+import imageprocessing.dataobjects.Line
+import imageprocessing.framework.pmp.filter.DataCompositionFilter
+import imageprocessing.framework.pmp.interfaces.Writeable
 import java.util.*
 
 class DataCompositionFilterImpl(output: Writeable<LinkedList<Line>>) : DataCompositionFilter<Line, LinkedList<Line>>(output) {

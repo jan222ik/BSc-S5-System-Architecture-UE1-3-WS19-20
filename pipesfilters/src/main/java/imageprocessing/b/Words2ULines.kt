@@ -1,8 +1,8 @@
-package pipesfilters.b
+package imageprocessing.b
 
-import pipesfilters.dataobjects.Line
-import pipesfilters.framework.pmp.filter.DataCompositionFilter
-import pipesfilters.framework.pmp.interfaces.Writeable
+import imageprocessing.dataobjects.Line
+import imageprocessing.framework.pmp.filter.DataCompositionFilter
+import imageprocessing.framework.pmp.interfaces.Writeable
 
 class Words2ULines(output: Writeable<Line>, private val lineLength: Int) : DataCompositionFilter<String, Line>(output) {
     private var overlenght: String? = null

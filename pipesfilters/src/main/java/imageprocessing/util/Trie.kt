@@ -1,4 +1,4 @@
-package pipesfilters.util
+package imageprocessing.util
 
 open class Trie {
 

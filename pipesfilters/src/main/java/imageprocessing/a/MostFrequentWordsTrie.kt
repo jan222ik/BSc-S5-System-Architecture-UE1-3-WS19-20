@@ -1,8 +1,8 @@
-package pipesfilters.a
+package imageprocessing.a
 
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import pipesfilters.util.Trie
+import imageprocessing.util.Trie
 import java.io.File
 
 class MostFrequentWordsTrie : Trie() {

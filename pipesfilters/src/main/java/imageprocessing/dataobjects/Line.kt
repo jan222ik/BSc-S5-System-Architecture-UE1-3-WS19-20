@@ -1,4 +1,4 @@
-package pipesfilters.dataobjects
+package imageprocessing.dataobjects
 
 data class Line(
         val number: Int,

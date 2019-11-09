@@ -1,7 +1,7 @@
-package pipesfilters.b
+package imageprocessing.b
 
-import pipesfilters.framework.pmp.filter.DataTransformationFilter2
-import pipesfilters.framework.pmp.interfaces.Writeable
+import imageprocessing.framework.pmp.filter.DataTransformationFilter2
+import imageprocessing.framework.pmp.interfaces.Writeable
 
 class Sb2S(output: Writeable<String>): DataTransformationFilter2<StringBuilder, String>(output) {
     override fun process(entity: StringBuilder?): String? {

@@ -1,8 +1,8 @@
-package pipesfilters.b
+package imageprocessing.b
 
-import pipesfilters.dataobjects.Line
-import pipesfilters.framework.pmp.filter.DataTransformationFilter1
-import pipesfilters.framework.pmp.interfaces.Writeable
+import imageprocessing.dataobjects.Line
+import imageprocessing.framework.pmp.filter.DataTransformationFilter1
+import imageprocessing.framework.pmp.interfaces.Writeable
 
 class LayoutFilter(output: Writeable<Line>, private val layout: Layout, private val lineLength: Int) : DataTransformationFilter1<Line>(output) {
     override fun process(entity: Line?) {

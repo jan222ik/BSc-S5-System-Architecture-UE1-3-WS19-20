@@ -108,7 +108,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>pipesfilters.Main</mainClass>
+                            <mainClass>imageprocessing.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

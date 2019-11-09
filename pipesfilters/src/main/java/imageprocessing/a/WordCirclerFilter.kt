@@ -1,9 +1,9 @@
-package pipesfilters.a
+package imageprocessing.a
 
-import pipesfilters.dataobjects.Line
-import pipesfilters.dataobjects.Word
-import pipesfilters.framework.pmp.filter.DataTransformationFilter3
-import pipesfilters.framework.pmp.interfaces.Writeable
+import imageprocessing.dataobjects.Line
+import imageprocessing.dataobjects.Word
+import imageprocessing.framework.pmp.filter.DataTransformationFilter3
+import imageprocessing.framework.pmp.interfaces.Writeable
 import java.util.*
 
 class WordCirclerFilter(output: Writeable<Line>, private val trie: MostFrequentWordsTrie) : DataTransformationFilter3<ArrayList<Word>, Line>(output) {

@@ -1,8 +1,8 @@
-package pipesfilters.a
+package imageprocessing.a
 
-import pipesfilters.dataobjects.Line
-import pipesfilters.framework.pmp.filter.DataTransformationFilter1
-import pipesfilters.framework.pmp.interfaces.Writeable
+import imageprocessing.dataobjects.Line
+import imageprocessing.framework.pmp.filter.DataTransformationFilter1
+import imageprocessing.framework.pmp.interfaces.Writeable
 
 class SanitizerFilter(output: Writeable<Line>) : DataTransformationFilter1<Line>(output) {
     override fun process(line: Line?) {

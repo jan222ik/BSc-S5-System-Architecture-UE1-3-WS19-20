@@ -1,4 +1,4 @@
-package pipesfilters.util
+package imageprocessing.util
 
 import java.util.*
 import java.util.function.Consumer

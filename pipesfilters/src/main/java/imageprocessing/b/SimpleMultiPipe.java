@@ -1,7 +1,7 @@
-package pipesfilters.b;
+package imageprocessing.b;
 
-import pipesfilters.framework.pmp.interfaces.IOable;
-import pipesfilters.framework.pmp.interfaces.Writeable;
+import imageprocessing.framework.pmp.interfaces.IOable;
+import imageprocessing.framework.pmp.interfaces.Writeable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.StreamCorruptedException;

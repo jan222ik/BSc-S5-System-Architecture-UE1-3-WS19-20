@@ -1,7 +1,7 @@
-package pipesfilters.b
+package imageprocessing.b
 
-import pipesfilters.framework.pmp.filter.DataCompositionFilter
-import pipesfilters.framework.pmp.interfaces.Writeable
+import imageprocessing.framework.pmp.filter.DataCompositionFilter
+import imageprocessing.framework.pmp.interfaces.Writeable
 
 class Chars2Words(output: Writeable<StringBuilder>) : DataCompositionFilter<Char, StringBuilder>(output) {
     override fun fillEntity(nextVal: Char?, entity: StringBuilder?): Boolean {

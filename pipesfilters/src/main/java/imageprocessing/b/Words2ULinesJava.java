@@ -1,9 +1,9 @@
-package pipesfilters.b;
+package imageprocessing.b;
 
 import org.jetbrains.annotations.NotNull;
-import pipesfilters.dataobjects.Line;
-import pipesfilters.framework.pmp.filter.DataCompositionFilter;
-import pipesfilters.framework.pmp.interfaces.Writeable;
+import imageprocessing.dataobjects.Line;
+import imageprocessing.framework.pmp.filter.DataCompositionFilter;
+import imageprocessing.framework.pmp.interfaces.Writeable;
 
 public class Words2ULinesJava extends DataCompositionFilter<String, Line> {
     private String overLength = null;

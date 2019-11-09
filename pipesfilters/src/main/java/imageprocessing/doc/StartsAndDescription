@@ -1,4 +1,4 @@
-Starting: java -jar pipesfilters.jar (when in same directory)
+Starting: java -jar imageprocessing.jar (when in same directory)
 Program arguments:  -overwrite (output file is overwritten when exists in same directory as jar)
                     -input="exampleInput.txt" (file to be indexed, can be full or relative path)
                     -freqWords="exampleFreqWords.txt" (file with the frequently used english words to filter, can be full or relative path)
@@ -11,13 +11,13 @@ Program arguments:  -overwrite (output file is overwritten when exists in same d
                     Mandatory: -input, -freqWords, either a or b (otherwise, there will be no output)
 
 Example start commands (assuming console is used in same directory as jar):
-java -jar pipesfilters.jar -overwrite -input=aliceInWonderland.txt -freqWords=frequentEnglishWords.txt a
+java -jar imageprocessing.jar -overwrite -input=aliceInWonderland.txt -freqWords=frequentEnglishWords.txt a
 (if the input file and the frequent words file are in the same directory as the jar and former output exists)
 
-java -jar pipesfilters.jar -overwrite -input="C:\Users\Matt\IdeaProjects\S5SysArch1\pipesfilters\out\artifacts\pipesfilters_jar\aliceInWonderland.txt" -freqWords="C:\Users\Matt\IdeaProjects\S5SysArch1\pipesfilters\out\artifacts\pipesfilters_jar\frequentEnglishWords.txt" b
+java -jar imageprocessing.jar -overwrite -input="C:\Users\Matt\IdeaProjects\S5SysArch1\imageprocessing\out\artifacts\pipesfilters_jar\aliceInWonderland.txt" -freqWords="C:\Users\Matt\IdeaProjects\S5SysArch1\imageprocessing\out\artifacts\pipesfilters_jar\frequentEnglishWords.txt" b
 (if the input file and the frequent words file are not in the same directory and an output file already exists)
 
-java -jar pipesfilters.jar -overwrite -input=aliceInWonderland.txt -freqWords=frequentEnglishWords.txt -freqLower=200 -line=120 -layout=RIGHT b
+java -jar imageprocessing.jar -overwrite -input=aliceInWonderland.txt -freqWords=frequentEnglishWords.txt -freqLower=200 -line=120 -layout=RIGHT b
 (files in same directory, output shall be overwritten, set lower bound of frequency to 200, length of line in chars to 120, layout to right-bound and use the pipeline from task b)
 
 Solution for filtering out frequently used words at beginning of circular shifts:

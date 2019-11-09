@@ -1,7 +1,7 @@
-package pipesfilters.b;
+package imageprocessing.b;
 
-import pipesfilters.framework.pmp.filter.Source;
-import pipesfilters.framework.pmp.interfaces.Writeable;
+import imageprocessing.framework.pmp.filter.Source;
+import imageprocessing.framework.pmp.interfaces.Writeable;
 
 import java.io.BufferedReader;
 import java.io.File;

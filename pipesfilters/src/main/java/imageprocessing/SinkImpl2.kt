@@ -1,10 +1,9 @@
-package pipesfilters
+package imageprocessing
 
-import pipesfilters.dataobjects.Line
-import pipesfilters.framework.pmp.filter.Sink
+import imageprocessing.dataobjects.Line
+import imageprocessing.framework.pmp.filter.Sink
 import java.io.File
 import java.io.PrintWriter
-import java.util.*
 
 class SinkImpl2(outputFile: File) : Sink<Line>() {
 

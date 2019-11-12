@@ -1,27 +1,30 @@
 package imageprocessing.core.filter;
 
+import imageprocessing.core.dataobj.Coordinates;
 import imageprocessing.core.dataobj.Report;
 import imageprocessing.framework.pmp.filter.DataTransformationFilter2;
 import imageprocessing.framework.pmp.img.Coordinate;
 import imageprocessing.framework.pmp.interfaces.Readable;
 import imageprocessing.framework.pmp.interfaces.Writeable;
+import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class QualityCheckFilter extends DataTransformationFilter2<List<Coordinate>, List<Report>> {
+public class QualityCheckFilter extends DataTransformationFilter2<Coordinates, List<Report>> {
 
     private Coordinate[] expectedCoordinates;
     private double accuracy;
 
-    public QualityCheckFilter(Coordinate[] expectedCoordinates, double accuracy, Readable<List<Coordinate>> input, Writeable<List<Report>> output) throws InvalidParameterException {
+    public QualityCheckFilter(Coordinate[] expectedCoordinates, double accuracy, Readable<Coordinates> input, Writeable<List<Report>> output) throws InvalidParameterException {
         super(input, output);
         this.expectedCoordinates = expectedCoordinates;
         this.accuracy = accuracy;
     }
 
-    public QualityCheckFilter(Coordinate[] expectedCoordinates, double accuracy, Readable<List<Coordinate>> input) throws InvalidParameterException {
+    public QualityCheckFilter(Coordinate[] expectedCoordinates, double accuracy, Readable<Coordinates> input) throws InvalidParameterException {
         super(input);
         this.expectedCoordinates = expectedCoordinates;
         this.accuracy = accuracy;
@@ -35,13 +38,16 @@ public class QualityCheckFilter extends DataTransformationFilter2<List<Coordinat
 
 
     @Override
-    protected List<Report> process(List<Coordinate> coordinates) {
+    protected List<Report> process(Coordinates coordinates) {
+        final int size = 30;
+        final int imgWidth = coordinates.getImgDTO().getImage().getWidth();
+        final int imgHeight = coordinates.getImgDTO().getImage().getHeight();
         LinkedList<Report> reports = new LinkedList<>();
         boolean inRange;
         Coordinate current;
         Coordinate expected;
-        for (int i = 0; i < coordinates.size(); i++) {
-            current = coordinates.get(i);
+        for (int i = 0; i < Math.min(coordinates.getCoordinates().size(), expectedCoordinates.length); i++) {
+            current = coordinates.getCoordinates().get(i);
             expected = expectedCoordinates[i];
 
             int deltaX = current._x - expected._x;
@@ -49,7 +55,12 @@ public class QualityCheckFilter extends DataTransformationFilter2<List<Coordinat
 
             inRange = (Math.abs(deltaX) < accuracy && Math.abs(deltaY) < accuracy);
 
-            reports.add(new Report(expected, current, inRange, deltaX, deltaY));
+            int x = Math.max(0, expected._x - size / 2);
+            int y = Math.max(0, expected._y - size / 2);
+            Rect roi = new Rect(x, y, Math.min(size, imgWidth - x), Math.min(size, imgHeight - y));
+            Mat submatOfDisk = coordinates.getImgDTO().getMat().submat(roi);
+
+            reports.add(new Report(expected, current, inRange, deltaX, deltaY, submatOfDisk));
         }
 
         return reports;

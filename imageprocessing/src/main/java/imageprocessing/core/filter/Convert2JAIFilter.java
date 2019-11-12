@@ -1,5 +1,6 @@
 package imageprocessing.core.filter;
 
+import imageprocessing.core.dataobj.Coordinates;
 import imageprocessing.core.dataobj.ImgDTO;
 import imageprocessing.framework.pmp.filter.DataTransformationFilter2;
 import imageprocessing.framework.pmp.img.CalcCentroidsFilter;
@@ -12,10 +13,10 @@ import java.awt.image.BufferedImage;
 import java.security.InvalidParameterException;
 import java.util.List;
 
-public class Convert2JAIFilter extends DataTransformationFilter2<ImgDTO, List<Coordinate>> {
+public class Convert2JAIFilter extends DataTransformationFilter2<ImgDTO, Coordinates> {
     private final CalcCentroidsFilter filter = new CalcCentroidsFilter(() -> null);
 
-    public Convert2JAIFilter(Readable<ImgDTO> input, Writeable<List<Coordinate>> output) throws InvalidParameterException {
+    public Convert2JAIFilter(Readable<ImgDTO> input, Writeable<Coordinates> output) throws InvalidParameterException {
         super(input, output);
     }
 
@@ -23,16 +24,16 @@ public class Convert2JAIFilter extends DataTransformationFilter2<ImgDTO, List<Co
         super(input);
     }
 
-    public Convert2JAIFilter(Writeable<List<Coordinate>> output) throws InvalidParameterException {
+    public Convert2JAIFilter(Writeable<Coordinates> output) throws InvalidParameterException {
         super(output);
     }
 
     @Override
-    protected List<Coordinate> process(ImgDTO entity) {
+    protected Coordinates process(ImgDTO entity) {
         BufferedImage image = entity.getImage();
         PlanarImage planarImage = PlanarImage.wrapRenderedImage(image);
         planarImage.setProperty("offsetX", entity.getShiftedX());
         planarImage.setProperty("offsetY", entity.getShiftedY());
-        return filter.process(planarImage);
+        return new Coordinates(filter.process(planarImage), entity);
     }
 }

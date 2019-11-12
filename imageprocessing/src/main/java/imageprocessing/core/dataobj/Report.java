@@ -1,6 +1,7 @@
 package imageprocessing.core.dataobj;
 
 import imageprocessing.framework.pmp.img.Coordinate;
+import org.opencv.core.Mat;
 
 public class Report {
     private Coordinate expected;
@@ -8,13 +9,15 @@ public class Report {
     private boolean inRange;
     private double deviationX;
     private double deviationY;
+    private Mat submatOfDisk;
 
-    public Report(Coordinate expected, Coordinate actual, boolean inRange, double deviationX, double deviationY) {
+    public Report(Coordinate expected, Coordinate actual, boolean inRange, double deviationX, double deviationY, Mat submatOfDisk) {
         this.expected = expected;
         this.actual = actual;
         this.inRange = inRange;
         this.deviationX = deviationX;
         this.deviationY = deviationY;
+        this.submatOfDisk = submatOfDisk;
     }
 
     public Coordinate getExpected() {
@@ -46,5 +49,9 @@ public class Report {
                 ", deviationX=" + deviationX +
                 ", deviationY=" + deviationY +
                 '}';
+    }
+
+    public Mat getSubmatOfDisk() {
+        return submatOfDisk;
     }
 }

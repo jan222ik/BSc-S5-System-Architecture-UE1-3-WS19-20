@@ -1,10 +1,12 @@
 package imageprocessing.core;
 
+import imageprocessing.core.dataobj.Coordinates;
 import imageprocessing.core.dataobj.ImgDTO;
 import imageprocessing.core.dataobj.Report;
 import imageprocessing.core.filter.Convert2JAIFilter;
 import imageprocessing.core.filter.ErodeFilter;
 import imageprocessing.core.filter.FilterFirstDisk;
+import imageprocessing.core.filter.FindRadiusFilter;
 import imageprocessing.core.filter.ImgSource;
 import imageprocessing.core.filter.MedianFilter;
 import imageprocessing.core.filter.QualityCheckFilter;
@@ -28,7 +30,7 @@ import java.util.Optional;
 public class MainPipes {
     public static void main(String[] args) {
         OpenCV.loadLocally();
-        boolean doPush = false;
+        boolean doPush = true;
         File disksImgOut = new File("imageprocessing/target/disks.png");
         File diskReports = new File("imageprocessing/target/report.txt");
         System.out.println(disksImgOut.getAbsolutePath());
@@ -59,14 +61,18 @@ public class MainPipes {
                                                                                     (Writeable<ImgDTO>) new ImgPipe(
                                                                                             write2FileAndDisplay(disksImgOut, "Erode"),
                                                                                             new Convert2JAIFilter(
-                                                                                                    new SimplePipe<List<Coordinate>>(
-                                                                                                            (Writeable<List<Coordinate>>) new FilterFirstDisk(
+                                                                                                    new SimplePipe<Coordinates>(
+                                                                                                            (Writeable<Coordinates>) new FilterFirstDisk(
                                                                                                                     1,
-                                                                                                                    (Writeable<List<Coordinate>>) new SimplePipe<>(
-                                                                                                                            (Writeable<List<Coordinate>>) new QualityCheckFilter(
+                                                                                                                    (Writeable<Coordinates>) new SimplePipe<>(
+                                                                                                                            (Writeable<Coordinates>) new QualityCheckFilter(
                                                                                                                                     expCoordinates, accuracy,
                                                                                                                                     new SimplePipe<List<Report>>(
-                                                                                                                                            new SinkImpl(diskReports)
+                                                                                                                                            (Writeable<List<Report>>) new FindRadiusFilter(
+                                                                                                                                                   (Writeable<List<Report>>) new SimplePipe<>(
+                                                                                                                                                           new SinkImpl(diskReports)
+                                                                                                                                                   )
+                                                                                                                                           )
                                                                                                                                     )
                                                                                                                             )
                                                                                                                     )
@@ -91,10 +97,10 @@ public class MainPipes {
                             new QualityCheckFilter(
                                     expCoordinates, accuracy,
                                     new SimplePipe<>(
-                                            (Readable<List<Coordinate>>) new FilterFirstDisk(
+                                            (Readable<Coordinates>) new FilterFirstDisk(
                                                     1,
-                                                    (Readable<List<Coordinate>>) new SimplePipe<>(
-                                                            (Readable<List<Coordinate>>) new Convert2JAIFilter(
+                                                    (Readable<Coordinates>) new SimplePipe<>(
+                                                            (Readable<Coordinates>) new Convert2JAIFilter(
                                                                     new ImgPipe(
                                                                             write2FileAndDisplay(disksImgOut, "Erode"),
                                                                             (Readable<ImgDTO>) new ErodeFilter(

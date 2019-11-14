@@ -16,15 +16,18 @@ import java.util.List;
 public class SinkImpl extends Sink<List<Report>> {
 
     private File output;
+    private double accuracy;
 
-    public SinkImpl(File output) {
+    public SinkImpl(File output, double accuracy) {
         super();
         this.output = output;
+        this.accuracy = accuracy;
     }
 
-    public SinkImpl(File output, Readable<List<Report>> input) throws InvalidParameterException {
+    public SinkImpl(File output, double accuracy, Readable<List<Report>> input) throws InvalidParameterException {
         super(input);
         this.output = output;
+        this.accuracy = accuracy;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class SinkImpl extends Sink<List<Report>> {
             }
         }
         try(PrintWriter pw = new PrintWriter(new FileWriter(output))) {
-            pw.println(LocalDateTime.now());
+            pw.println(LocalDateTime.now() + " - Accuracy:" + accuracy);
             for (Report report : reports) {
                 pw.write(report.toString() + "\n");
             }

@@ -70,7 +70,7 @@ public class MainPipes {
                                                                                                                                     new SimplePipe<List<Report>>(
                                                                                                                                             (Writeable<List<Report>>) new FindRadiusFilter(
                                                                                                                                                    (Writeable<List<Report>>) new SimplePipe<>(
-                                                                                                                                                           new SinkImpl(diskReports)
+                                                                                                                                                           new SinkImpl(diskReports, accuracy)
                                                                                                                                                    )
                                                                                                                                            )
                                                                                                                                     )
@@ -92,7 +92,7 @@ public class MainPipes {
             sourcePicture.run();
         } else {
             SinkImpl sink = new SinkImpl(
-                    diskReports,
+                    diskReports, accuracy,
                     new SimplePipe<List<Report>>(
                             new QualityCheckFilter(
                                     expCoordinates, accuracy,

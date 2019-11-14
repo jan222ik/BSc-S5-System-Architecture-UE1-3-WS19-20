@@ -3,6 +3,8 @@ package imageprocessing.core.dataobj;
 import imageprocessing.framework.pmp.img.Coordinate;
 import org.opencv.core.Mat;
 
+import java.util.Arrays;
+
 public class Report {
     private Coordinate expected;
     private Coordinate actual;
@@ -10,6 +12,7 @@ public class Report {
     private double deviationX;
     private double deviationY;
     private Mat submatOfDisk;
+    private float[][] radii;
 
     public Report(Coordinate expected, Coordinate actual, boolean inRange, double deviationX, double deviationY, Mat submatOfDisk) {
         this.expected = expected;
@@ -48,10 +51,15 @@ public class Report {
                 ", inRange=" + inRange +
                 ", deviationX=" + deviationX +
                 ", deviationY=" + deviationY +
+                ", radii=" + Arrays.deepToString(radii) +
                 '}';
     }
 
     public Mat getSubmatOfDisk() {
         return submatOfDisk;
+    }
+
+    public void setRadii(float[][] radii) {
+        this.radii = radii;
     }
 }

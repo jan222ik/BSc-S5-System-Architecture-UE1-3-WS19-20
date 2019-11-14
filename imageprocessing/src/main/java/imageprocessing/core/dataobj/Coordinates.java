@@ -20,4 +20,8 @@ public class Coordinates {
     public ImgDTO getImgDTO() {
         return imgDTO;
     }
+
+    public void setCoordinates(List<Coordinate> coordinates) {
+        this.coordinates = coordinates;
+    }
 }

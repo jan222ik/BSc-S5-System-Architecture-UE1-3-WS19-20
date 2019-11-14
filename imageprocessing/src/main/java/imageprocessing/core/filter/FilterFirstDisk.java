@@ -2,11 +2,8 @@ package imageprocessing.core.filter;
 
 import imageprocessing.core.dataobj.Coordinates;
 import imageprocessing.framework.pmp.filter.DataTransformationFilter2;
-import imageprocessing.framework.pmp.img.Coordinate;
 import imageprocessing.framework.pmp.interfaces.Readable;
 import imageprocessing.framework.pmp.interfaces.Writeable;
-
-import java.util.List;
 
 public class FilterFirstDisk extends DataTransformationFilter2<Coordinates, Coordinates> {
 
@@ -29,7 +26,7 @@ public class FilterFirstDisk extends DataTransformationFilter2<Coordinates, Coor
 
     @Override
     protected Coordinates process(Coordinates entity) {
-        entity.getCoordinates().subList(removeFirstN, entity.getCoordinates().size() - 1);
+        entity.setCoordinates(entity.getCoordinates().subList(removeFirstN, entity.getCoordinates().size()));
         return entity;
     }
 }

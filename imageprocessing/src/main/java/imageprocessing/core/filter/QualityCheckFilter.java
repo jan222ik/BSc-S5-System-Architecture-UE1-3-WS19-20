@@ -39,7 +39,7 @@ public class QualityCheckFilter extends DataTransformationFilter2<Coordinates, L
 
     @Override
     protected List<Report> process(Coordinates coordinates) {
-        final int size = 30;
+        final int size = 40;
         final int imgWidth = coordinates.getImgDTO().getImage().getWidth();
         final int imgHeight = coordinates.getImgDTO().getImage().getHeight();
         LinkedList<Report> reports = new LinkedList<>();
@@ -55,9 +55,11 @@ public class QualityCheckFilter extends DataTransformationFilter2<Coordinates, L
 
             inRange = (Math.abs(deltaX) < accuracy && Math.abs(deltaY) < accuracy);
 
-            int x = Math.max(0, expected._x - size / 2);
-            int y = Math.max(0, expected._y - size / 2);
+            int x = Math.max(0, current._x - size / 2);
+            int y = Math.max(0, current._y - size / 2 - 30);
             Rect roi = new Rect(x, y, Math.min(size, imgWidth - x), Math.min(size, imgHeight - y));
+
+            System.out.println(i + " current = " + current + " -> roi = " + roi);
             Mat submatOfDisk = coordinates.getImgDTO().getMat().submat(roi);
 
             reports.add(new Report(expected, current, inRange, deltaX, deltaY, submatOfDisk));

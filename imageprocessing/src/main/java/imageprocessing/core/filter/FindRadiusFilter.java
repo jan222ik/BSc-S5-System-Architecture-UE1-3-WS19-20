@@ -18,6 +18,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -75,6 +76,8 @@ public class FindRadiusFilter extends DataTransformationFilter1<List<Report>> {
                 ImgDTO imgDTO = new ImgDTO();
                 imgDTO.setMat(drawing);
                 GUI.displayImage(imgDTO.getImage(), "Enclosing Circle");
+                System.out.println("radius = " + Arrays.deepToString(radius));
+                report.setRadii(radius);
             }
         }
     }

@@ -23,7 +23,11 @@ a4paper,
 total={170mm,257mm},
 left=10mm,
 top=10mm,
+textwidth=170mm
 }
+\usepackage[style=authoryear,citestyle=authoryear,backend=bibtex]{biblatex}
+
+\addbibresource{SysArchU2}
 
 \setstretch{1.5}
 
@@ -32,26 +36,50 @@ top=10mm,
 % Document
 \begin{document}
 \maketitle
-placeholder text :D — interesting
 
-% Please add the following required packages to your document preamble:
-% \usepackage{graphicx}
-\begin{table}[]
+\chapter{Start Instructions}
+The program can be started with "java -jar <path>imageprocessing.jar <args>".
+The table \ref{tab:args-table} shows the possible (and for jar-build required) arguments.
+The arguments can be passed like the following: <name>=<value>
+\begin{table}[H]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|}
 \hline
-Name              & Necessary & Definition                                         & Default                                                        \\ \hline
--src              & yes       & Source image                                       & Path: imageprocessing/src/main/resources/loetstellen.jpg       \\ \hline
--acc              & yes       & Accuracy                                           & 3                                                              \\ \hline
--pull             & yes       & Switch to Pullpipe                                 & false                                                          \\ \hline
--exptCoords       & /         & File with expected Coords                          & Path: imageprocessing/src/main/resources/expectedCentroids.txt \\ \hline
--disksImgOut      & /         & Output for created DiskImg after Erosion           & Path: imageprocessing/target/disks.png                         \\ \hline
--diskReportOut    & /         & Output for created Report                          & Path: imageprocessing/target/report.txt                        \\ \hline
--shapeTypeErode   & /         & Shape type for erode filter Range{[}0 - 3{]}       & 0                                                              \\ \hline
--kernelSizeErode  & /         & Kernel size for erode filter                       & 2                                                              \\ \hline
--kernelSizeMedian & /         & Kernel size for median filter                      & 19                                                             \\ \hline
--removeFirstN     & /         & Removes the first n found disks in the given image & 1                                                              \\ \hline
+Name & Required & Definition & Default                                                        \\ \hline
+-src & yes & Source image & Path: imageprocessing/src/main/resources/loetstellen.jpg       \\ \hline
+-acc & / & Accuracy & 3                                                              \\ \hline
+-pull & / & Switch to Pullpipe & false                                                          \\ \hline
+-exptCoords & yes & File with expected Coords & Path: imageprocessing/src/main/resources/expectedCentroids.txt \\ \hline
+-disksImgOut & yes & Output for created DiskImg after Erosion & Path: imageprocessing/target/disks.png                         \\ \hline
+-diskReportOut & yes & Output for created Report & Path: imageprocessing/target/report.txt                        \\ \hline
+-shapeTypeErode & / & Shape type for erode filter Range{[}0 - 3{]}       & 0                                                              \\ \hline
+-kernelSizeErode & / & Kernel size for erode filter & 2                                                              \\ \hline
+-kernelSizeMedian & / & Kernel size for median filter & 19                                                             \\ \hline
+-removeFirstN & / & Removes the first n found disks in the given image & 1                                                              \\ \hline
 \end{tabular}%
 }
+\caption{Table of command-line arguments}
+\label{tab:args-table}
 \end{table}
+\chapter{Workflow Description}
+The exercise is utilizing the OpenCV framework \parencite{intel_opencv_2019} and the maven artifact nu.pattern::opencv::2.4.9-4 to execute locally without OpenCV dll files installed.
+The following workflow description follows the chronological steps of the process, which order of filters are represented by the pull pipe.
+The source of the pipeline (Class: ImgSource) reads the passed file; converts the read image in an OpenCV matrix (Class: org.opencv.core.Mat) and exports a DataTransferObject DTO (Class: ImgDTO) containing the created matrix.
+The first filter (Class: ROIFilter) virtually crops the image by creating a sub-matrix of the passed matrix, the selected area is refereed to as Region of Interest (ROI). Additionally the offset between the origin of the original matrix and the ROI matrix is saved for later.
+To better distinguish between the disks and the background the second filter, a threshold filter (Class: ThresholdFilter) is used; the threshold type is Binary, Inverted.
+The formula for the type \parencite{opencv_2.4.13.7_documentation_basic_nodate} projects every pixel form the src matrix grater then the threshold 30 to white and all other to black.
+\[ dst(x, y) =
+\begin{cases}
+white       & \quad \text{if } src(x,y) > 30\\
+black  & \quad \text{otherwise}
+\end{cases}
+\]
+The result still contains noise, which can be minimized by a median blur filter (Class: MedianFilter). According to the OpenCV documentation \parencite{opencv_3.4.8_documentation_opencv:_nodate} each pixel is set to the median of its neighboring pixels.
+The size in pixels for the neighbourhood is called kernel size.
+The forth filter, a ErodeFilter removes the cables to the disk.
+The fifth filter converts the the matrix into a PlanarImage and passes it with the ROI offsets to the given filter CalcCentroidsFilter and creates a DTO containing the provided coordinates and the input ImgDTO\@.
+The sixth filter checks if the detected coordinates are within the given accuracy and creates a report for each centroid with its results.
+The seventh filter calculates the minimum and maximum radius of an enclosing for a centroid of an report.
+Finally, the sink creates a file containing all information of the reports.
+\printbibliography
 \end{document}

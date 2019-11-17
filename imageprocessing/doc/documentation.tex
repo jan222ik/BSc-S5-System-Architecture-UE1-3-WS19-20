@@ -42,6 +42,8 @@ The program can be started with "java -jar <path>imageprocessing.jar <args>".
 The table \ref{tab:args-table} shows the possible (and for jar-build required) arguments.
 The arguments can be passed like the following: <name>=<value>
 Example for minimal required input: java -jar imageprocessing.jar -src=loetstellen.jpg -exptCoords=expectedCentroids.txt
+When no path is given in the respective arguments for the outputs (see table), the program will create a folder
+imageprocessing/target in the folder where the jar is located. There, the reports.txt and the disks.png will be put.
 \begin{table}[H]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|}
@@ -78,9 +80,15 @@ black  & \quad \text{otherwise}
 The result still contains noise, which can be minimized by a median blur filter (Class: MedianFilter). According to the OpenCV documentation \parencite{opencv_3.4.8_documentation_opencv:_nodate} each pixel is set to the median of its neighboring pixels.
 The size in pixels for the neighbourhood is called kernel size.
 The forth filter, a ErodeFilter removes the cables to the disk.
-The fifth filter converts the the matrix into a PlanarImage and passes it with the ROI offsets to the given filter CalcCentroidsFilter and creates a DTO containing the provided coordinates and the input ImgDTO\@.
+The fifth filter converts the the matrix into a PlanarImage and passes it with the ROI offsets to the given filter CalcCentroidsFilter and creates a DTO containing the provided coordinates (middle of the disks) and the input ImgDTO\@.
 The sixth filter checks if the detected coordinates are within the given accuracy and creates a report for each centroid with its results.
 The seventh filter calculates the minimum and maximum radius of an enclosing for a centroid of an report.
 Finally, the sink creates a file containing all information of the reports.
+
+For the pull pipe, the SinkImpl is run and uses the same filters as the push pipe, only that the read method is used and
+Readables are passed through the pipe.
+The reason for the many casts in the MainPipes class is the fact that constructors for both Readables and Writeables were
+overwritten, to enable us to create both a push- and a pull-pipe. Because of this, the Compiler can't tell which constructor
+it should use, requiring the use of casts.
 \printbibliography
 \end{document}

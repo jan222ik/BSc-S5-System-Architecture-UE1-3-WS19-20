@@ -41,6 +41,7 @@ textwidth=170mm
 The program can be started with "java -jar <path>imageprocessing.jar <args>".
 The table \ref{tab:args-table} shows the possible (and for jar-build required) arguments.
 The arguments can be passed like the following: <name>=<value>
+Example for minimal required input: java -jar imageprocessing.jar -src=loetstellen.jpg -exptCoords=expectedCentroids.txt
 \begin{table}[H]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|l|}
@@ -50,8 +51,8 @@ Name & Required & Definition & Default                                          
 -acc & / & Accuracy & 3                                                              \\ \hline
 -pull & / & Switch to Pullpipe & false                                                          \\ \hline
 -exptCoords & yes & File with expected Coords & Path: imageprocessing/src/main/resources/expectedCentroids.txt \\ \hline
--disksImgOut & yes & Output for created DiskImg after Erosion & Path: imageprocessing/target/disks.png                         \\ \hline
--diskReportOut & yes & Output for created Report & Path: imageprocessing/target/report.txt                        \\ \hline
+-disksImgOut & / & Output for created DiskImg after Erosion & Path: imageprocessing/target/disks.png                         \\ \hline
+-diskReportOut & / & Output for created Report & Path: imageprocessing/target/report.txt                        \\ \hline
 -shapeTypeErode & / & Shape type for erode filter Range{[}0 - 3{]}       & 0                                                              \\ \hline
 -kernelSizeErode & / & Kernel size for erode filter & 2                                                              \\ \hline
 -kernelSizeMedian & / & Kernel size for median filter & 19                                                             \\ \hline

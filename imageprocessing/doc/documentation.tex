@@ -23,7 +23,7 @@ a4paper,
 total={170mm,257mm},
 left=10mm,
 top=10mm,
-textwidth=170mm
+textwidth=190mm
 }
 \usepackage[style=authoryear,citestyle=authoryear,backend=bibtex]{biblatex}
 
@@ -79,10 +79,11 @@ black  & \quad \text{otherwise}
 \]
 The result still contains noise, which can be minimized by a median blur filter (Class: MedianFilter). According to the OpenCV documentation \parencite{opencv_3.4.8_documentation_opencv:_nodate} each pixel is set to the median of its neighboring pixels.
 The size in pixels for the neighbourhood is called kernel size.
-The forth filter, a ErodeFilter removes the cables to the disk.
-The fifth filter converts the the matrix into a PlanarImage and passes it with the ROI offsets to the given filter CalcCentroidsFilter and creates a DTO containing the provided coordinates (middle of the disks) and the input ImgDTO\@.
-The sixth filter checks if the detected coordinates are within the given accuracy and creates a report for each centroid with its results.
-The seventh filter calculates the minimum and maximum radius of an enclosing for a centroid of an report.
+The forth filter, a ErodeFilter (Class: ErodeFilter) removes the cables to the disk, by removing pixels not part of a structuring element.
+The fifth filter (Class: Convert2JAIFilter) converts the the matrix into a PlanarImage and passes it with the ROI offsets to the given filter CalcCentroidsFilter and creates a DTO containing the provided coordinates (middle of the disks) and the input ImgDTO\@.
+The sixth filter (Class: FilterFirstDisk) does not modify the images, but removes the fist n found centroids, this was done to match it to the size of expected centroids list.
+The seventh filter (Class: QualityCheckFilter) checks if the detected coordinates are within the given accuracy and creates a report for each centroid with its results.
+The eighth filter (Class: FindRadiusFilter) calculates the minimum and maximum radius of an enclosing circle for a centroid of an report.
 Finally, the sink creates a file containing all information of the reports.
 
 For the pull pipe, the SinkImpl is run and uses the same filters as the push pipe, only that the read method is used and

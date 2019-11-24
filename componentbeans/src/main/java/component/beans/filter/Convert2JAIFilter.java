@@ -12,9 +12,16 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+
 public class Convert2JAIFilter {
 
+    private ImgDTO cache;
+
     public Convert2JAIFilter() {
+    }
+
+    private void overwriteImage(ImgDTO imgDTO) {
+        cache = imgDTO.cloneDTO();
     }
 
     private Coordinates process(ImgDTO entity) {

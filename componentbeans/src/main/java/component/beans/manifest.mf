@@ -1,2 +1,32 @@
 Name: TestBean.class
 Java-Bean: True
+
+Name: Convert2JAIFilter.class
+Java-Bean: True
+
+Name: ErodeFilter.class
+Java-Bean: True
+
+Name: FilterFirstDisk.class
+Java-Bean: True
+
+Name: FindRadiusFilter.class
+Java-Bean: True
+
+Name: ImgSource.class
+Java-Bean: True
+
+Name: MedianFilter.class
+Java-Bean: True
+
+Name: QualityCheckFilter.class
+Java-Bean: True
+
+Name: ROIFilter.class
+Java-Bean: True
+
+Name: SinkImpl.class
+Java-Bean: True
+
+Name: ThresholdFilter.class
+Java-Bean: True

@@ -80,7 +80,7 @@
                 <configuration>
                   <archive>
                         <manifest>
-                            <mainClass>component.beans.BeanMain</mainClass>
+                            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
                         </manifest>
                     </archive>
                     <descriptorRefs>

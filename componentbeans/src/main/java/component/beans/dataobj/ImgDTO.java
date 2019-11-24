@@ -12,6 +12,12 @@ public class ImgDTO {
     private int shiftedY = 0;
     private Mat mat = null;
 
+    private ImgDTO(int shiftedX, int shiftedY, Mat mat) {
+        this.shiftedX = shiftedX;
+        this.shiftedY = shiftedY;
+        this.mat = mat;
+    }
+
     public ImgDTO() {
     }
 
@@ -56,5 +62,9 @@ public class ImgDTO {
 
     public void setMat(Mat mat) {
         this.mat = mat;
+    }
+
+    public ImgDTO cloneDTO() {
+        return new ImgDTO(this.shiftedX, this.shiftedY, this.mat);
     }
 }

@@ -9,7 +9,11 @@ public class TestBeanBeanInfo extends SimpleBeanInfo {
 
     @Override
     public BeanDescriptor getBeanDescriptor() {
-        return super.getBeanDescriptor();
+
+        BeanDescriptor desc = new BeanDescriptor(TestBean.class);
+        desc.setShortDescription("A test bean");
+        desc.setDisplayName("Test");
+        return desc;
     }
 
     @Override

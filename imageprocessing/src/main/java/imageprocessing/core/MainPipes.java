@@ -167,11 +167,11 @@ public class MainPipes {
 
     //If org pic background needed: https://stackoverflow.com/questions/40527769/removing-black-background-and-make-transparent-from-grabcut-output-in-python-ope
     //Draw Rect: Imgproc.rectangle(matrix, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 255, 255, 255), 3);
-    public static Writeable<ImgDTO> displayImgWritable(String title) {
+    private static Writeable<ImgDTO> displayImgWritable(String title) {
         return imageDTO -> Optional.ofNullable(imageDTO).ifPresent(img -> GUI.displayImage(img.getImage(), title));
     }
 
-    public static Writeable<ImgDTO> write2FileAndDisplay(File file, String title) {
+    private static Writeable<ImgDTO> write2FileAndDisplay(File file, String title) {
         return imageDTO -> Optional.ofNullable(imageDTO).ifPresent(img -> {
             if (!file.exists()) {
                 file.getParentFile().mkdirs();

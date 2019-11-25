@@ -4,7 +4,7 @@ Java-Bean: True
 Name: Convert2JAIFilter.class
 Java-Bean: True
 
-Name: ErodeFilterBean.class
+Name: component.beans.filter.ErodeFilterBean.class
 Java-Bean: True
 
 Name: FilterFirstDisk.class

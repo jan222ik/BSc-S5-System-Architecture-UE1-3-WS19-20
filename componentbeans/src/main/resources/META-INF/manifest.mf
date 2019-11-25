@@ -1,32 +1,32 @@
-Name: omponent.beans.filter.TestBean.class
+Name: component.beans.filter.TestBean.class
 Java-Bean: True
 
-Name: omponent.beans.filter.Convert2JAIFilter.class
+Name: component.beans.filter.Convert2JAIFilter.class
 Java-Bean: True
 
 Name: component.beans.filter.ErodeFilterBean.class
 Java-Bean: True
 
-Name: omponent.beans.filter.FilterFirstDisk.class
+Name: component.beans.filter.FilterFirstDisk.class
 Java-Bean: True
 
-Name: omponent.beans.filter.FindRadiusFilter.class
+Name: component.beans.filter.FindRadiusFilter.class
 Java-Bean: True
 
-Name: omponent.beans.filter.ImgSource.class
+Name: component.beans.filter.ImgSource.class
 Java-Bean: True
 
-Name: omponent.beans.filter.MedianFilter.class
+Name: component.beans.filter.MedianFilter.class
 Java-Bean: True
 
-Name: omponent.beans.filter.QualityCheckFilter.class
+Name: component.beans.filter.QualityCheckFilter.class
 Java-Bean: True
 
-Name: omponent.beans.filter.ROIFilter.class
+Name: component.beans.filter.ROIFilter.class
 Java-Bean: True
 
-Name: omponent.beans.filter.SinkImpl.class
+Name: component.beans.filter.SinkImpl.class
 Java-Bean: True
 
-Name: omponent.beans.filter.ThresholdFilter.class
+Name: component.beans.filter.ThresholdFilter.class
 Java-Bean: True

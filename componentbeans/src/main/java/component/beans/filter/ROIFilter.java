@@ -2,18 +2,28 @@ package component.beans.filter;
 
 import component.beans.dataobj.ImgDTO;
 import component.beans.util.CacheHelper;
+import component.beans.util.GUI;
+import component.beans.util.SetterHelper;
+import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
-public class ROIFilter {
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
-    private CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
+public class ROIFilter implements Serializable, PropertyChangeListener {
+
+    private transient CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
+    private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
     private int x = 0;
     private int y = 35;
     private int width = 448;
     private int height = 80;
 
     public ROIFilter() {
+        OpenCV.loadLocally();
     }
 
     protected ImgDTO process() {
@@ -28,12 +38,27 @@ public class ROIFilter {
         return entity;
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
+        update();
+    }
+
+    public void update() {
+        ImgDTO process = process();
+        GUI.displayImage(process.getImage(), "Latest ROI");
+        mPcs.firePropertyChange("roiNew", null, process);
+    }
+
     public int getX() {
         return x;
     }
 
     public void setX(int x) {
-        this.x = x;
+        SetterHelper.notNeg(x, () -> {
+            this.x = x;
+            update();
+        });
     }
 
     public int getY() {
@@ -41,7 +66,10 @@ public class ROIFilter {
     }
 
     public void setY(int y) {
-        this.y = y;
+        SetterHelper.notNeg(y, () -> {
+            this.y = y;
+            update();
+        });
     }
 
     public int getWidth() {
@@ -49,7 +77,10 @@ public class ROIFilter {
     }
 
     public void setWidth(int width) {
-        this.width = width;
+        SetterHelper.notNeg(width, () -> {
+            this.width = width;
+            update();
+        });
     }
 
     public int getHeight() {
@@ -57,6 +88,18 @@ public class ROIFilter {
     }
 
     public void setHeight(int height) {
-        this.height = height;
+        SetterHelper.notNeg(height, () -> {
+            this.height = height;
+            update();
+        });
     }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        mPcs.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        mPcs.removePropertyChangeListener(listener);
+    }
+
 }

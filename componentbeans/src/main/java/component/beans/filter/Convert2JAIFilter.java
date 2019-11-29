@@ -7,6 +7,8 @@ import component.beans.util.CacheHelper;
 
 import javax.media.jai.PlanarImage;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,6 +22,7 @@ public class Convert2JAIFilter {
     private final HashMap<Coordinate, Boolean> general = new HashMap<>();
     private final LinkedList<ArrayList<Coordinate>> figures = new LinkedList<>();
     private javax.media.jai.PlanarImage image;
+    private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
 
     public Convert2JAIFilter() {
     }
@@ -37,6 +40,13 @@ public class Convert2JAIFilter {
         }
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        mPcs.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        mPcs.removePropertyChangeListener(listener);
+    }
 
     private List<Coordinate> processInternal(PlanarImage planarImage) {
         image = planarImage;

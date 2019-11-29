@@ -1,8 +1,9 @@
 package component.beans.dataobj;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Coordinates {
+public class Coordinates implements Serializable {
     private List<Coordinate> coordinates;
     private ImgDTO imgDTO;
 

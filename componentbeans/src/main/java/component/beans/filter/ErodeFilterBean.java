@@ -2,6 +2,7 @@ package component.beans.filter;
 
 import component.beans.dataobj.ImgDTO;
 import component.beans.util.CacheHelper;
+import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Size;
@@ -12,19 +13,20 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
-public class ErodeFilterBean implements Serializable {
+public class ErodeFilterBean implements PropertyChangeListener, Serializable {
 
     private CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
-    private int shapeType;
-    private int kernalSize;
+    private int shapeType = 0;
+    private int kernalSize = 2;
     private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
 
 
     public ErodeFilterBean() {
+        OpenCV.loadLocally();
         PropertyChangeListener listener = evt -> {
-                if (evt.getOldValue() != evt.getNewValue()) {
-                    mPcs.firePropertyChange("erodeNew", null, process());
-                }
+            if (evt.getOldValue() != evt.getNewValue()) {
+                mPcs.firePropertyChange("erodeNew", null, process());
+            }
         };
         mPcs.addPropertyChangeListener("shapeType", listener);
         mPcs.addPropertyChangeListener("kernalSize", listener);
@@ -42,12 +44,14 @@ public class ErodeFilterBean implements Serializable {
     }
 
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        mPcs.addPropertyChangeListener(listener);
+    private void update() {
+        mPcs.firePropertyChange("erodeNew", null, process());
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        mPcs.removePropertyChangeListener(listener);
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
+        update();
     }
 
     public int getShapeType() {
@@ -57,8 +61,11 @@ public class ErodeFilterBean implements Serializable {
     public void setShapeType(int shapeType) {
         int oldShapeType = this.shapeType;
         this.shapeType = shapeType;
-        mPcs.firePropertyChange("shapeType",
-                oldShapeType, shapeType);
+        if (shapeType < 0 || shapeType > 4) {
+            this.shapeType = oldShapeType;
+        } else {
+            update();
+        }
     }
 
     public int getKernalSize() {
@@ -66,10 +73,18 @@ public class ErodeFilterBean implements Serializable {
     }
 
     public void setKernalSize(int kernalSize) {
-        int oldKernalSize = this.kernalSize;
-        this.kernalSize = kernalSize;
-        mPcs.firePropertyChange("kernalSize", oldKernalSize, kernalSize);
+        if (kernalSize > 0) {
+            this.kernalSize = kernalSize;
+            update();
+        }
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        mPcs.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        mPcs.removePropertyChangeListener(listener);
+    }
 }
 

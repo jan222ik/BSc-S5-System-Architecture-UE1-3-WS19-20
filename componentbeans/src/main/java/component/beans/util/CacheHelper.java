@@ -1,5 +1,7 @@
 package component.beans.util;
 
+import java.util.function.UnaryOperator;
+
 public class CacheHelper<T> {
     T cache = null;
 
@@ -7,7 +9,8 @@ public class CacheHelper<T> {
         return cache;
     }
 
-    public void setCache(T cache) {
-        this.cache = cache;
+    public void setCache(T cache, UnaryOperator<T> cloner) {
+        if (cache == null) return;
+        this.cache = cloner.apply(cache);
     }
 }

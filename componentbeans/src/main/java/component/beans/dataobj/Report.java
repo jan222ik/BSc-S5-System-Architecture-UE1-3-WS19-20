@@ -2,9 +2,10 @@ package component.beans.dataobj;
 
 import org.opencv.core.Mat;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Report {
+public class Report implements Serializable {
     private Coordinate expected;
     private Coordinate actual;
     private boolean inRange;

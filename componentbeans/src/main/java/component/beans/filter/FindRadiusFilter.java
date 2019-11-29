@@ -5,6 +5,7 @@ import component.beans.dataobj.ImgDTO;
 import component.beans.dataobj.Report;
 import component.beans.util.CacheHelper;
 import component.beans.util.GUI;
+import nu.pattern.OpenCV;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -13,6 +14,8 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +25,11 @@ public class FindRadiusFilter {
 
     private CacheHelper<List<Report>> cacheHelper = new CacheHelper<>();
     private int threshold = 100;
+    private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
 
+    public FindRadiusFilter() {
+        OpenCV.loadLocally();
+    }
 
     private List<Report> process() {
         List<Report> entity = cacheHelper.getCache();
@@ -67,6 +74,14 @@ public class FindRadiusFilter {
             }
         }
         return entity;
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        mPcs.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        mPcs.removePropertyChangeListener(listener);
     }
 
     public int getThreshold() {

@@ -6,8 +6,9 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.Serializable;
 
-public class ImgDTO {
+public class ImgDTO implements Serializable {
     private int shiftedX = 0;
     private int shiftedY = 0;
     private Mat mat = null;

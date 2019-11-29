@@ -1,10 +1,11 @@
 package component.beans.filter;
 
-import component.beans.dataobj.Coordinates;
 import component.beans.dataobj.ImgDTO;
 import component.beans.dataobj.Report;
+import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
 import component.beans.util.GUI;
+import component.beans.util.SetterHelper;
 import nu.pattern.OpenCV;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -14,14 +15,16 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class FindRadiusFilter {
+public class FindRadiusFilter implements BeanMethods {
 
     private CacheHelper<List<Report>> cacheHelper = new CacheHelper<>();
     private int threshold = 100;
@@ -76,6 +79,13 @@ public class FindRadiusFilter {
         return entity;
     }
 
+    @Override
+    public void update() {
+        List<Report> process = process();
+        System.out.println(Arrays.toString(process.toArray(new Report[0])));
+        mPcs.firePropertyChange("newRadii", null, process);
+    }
+
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         mPcs.addPropertyChangeListener(listener);
     }
@@ -89,6 +99,16 @@ public class FindRadiusFilter {
     }
 
     public void setThreshold(int threshold) {
-        this.threshold = threshold;
+        SetterHelper.notNeg(threshold, () -> {
+            this.threshold = threshold;
+            update();
+        });
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ((evt.getNewValue() instanceof List)) {
+            cacheHelper.setCache((List<Report>) evt.getNewValue(), list -> list.stream().map(Report::cloneReport).collect(Collectors.toList()));
+        }
     }
 }

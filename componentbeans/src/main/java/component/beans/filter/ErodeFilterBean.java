@@ -1,7 +1,9 @@
 package component.beans.filter;
 
 import component.beans.dataobj.ImgDTO;
+import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
+import component.beans.util.SetterHelper;
 import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -13,7 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
-public class ErodeFilterBean implements PropertyChangeListener, Serializable {
+public class ErodeFilterBean implements BeanMethods {
 
     private CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
     private int shapeType = 0;
@@ -23,13 +25,6 @@ public class ErodeFilterBean implements PropertyChangeListener, Serializable {
 
     public ErodeFilterBean() {
         OpenCV.loadLocally();
-        PropertyChangeListener listener = evt -> {
-            if (evt.getOldValue() != evt.getNewValue()) {
-                mPcs.firePropertyChange("erodeNew", null, process());
-            }
-        };
-        mPcs.addPropertyChangeListener("shapeType", listener);
-        mPcs.addPropertyChangeListener("kernalSize", listener);
     }
 
     private ImgDTO process() {
@@ -43,8 +38,8 @@ public class ErodeFilterBean implements PropertyChangeListener, Serializable {
         return entity;
     }
 
-
-    private void update() {
+    @Override
+    public void update() {
         mPcs.firePropertyChange("erodeNew", null, process());
     }
 
@@ -59,13 +54,10 @@ public class ErodeFilterBean implements PropertyChangeListener, Serializable {
     }
 
     public void setShapeType(int shapeType) {
-        int oldShapeType = this.shapeType;
-        this.shapeType = shapeType;
-        if (shapeType < 0 || shapeType > 4) {
-            this.shapeType = oldShapeType;
-        } else {
+        SetterHelper.between(shapeType, 0, 4, () -> {
+            this.shapeType = shapeType;
             update();
-        }
+        });
     }
 
     public int getKernalSize() {
@@ -73,16 +65,18 @@ public class ErodeFilterBean implements PropertyChangeListener, Serializable {
     }
 
     public void setKernalSize(int kernalSize) {
-        if (kernalSize > 0) {
+        SetterHelper.notNeg(kernalSize, () -> {
             this.kernalSize = kernalSize;
             update();
-        }
+        });
+
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         mPcs.addPropertyChangeListener(listener);
     }
-
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         mPcs.removePropertyChangeListener(listener);
     }

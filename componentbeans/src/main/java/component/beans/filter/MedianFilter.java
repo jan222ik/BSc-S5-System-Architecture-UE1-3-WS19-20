@@ -1,15 +1,19 @@
 package component.beans.filter;
 
 import component.beans.dataobj.ImgDTO;
+import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
+import component.beans.util.GUI;
+import component.beans.util.SetterHelper;
 import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class MedianFilter {
+public class MedianFilter implements BeanMethods {
 
     private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
     private CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
@@ -30,10 +34,21 @@ public class MedianFilter {
         return entity;
     }
 
+    @Override
+    public void update() {
+        ImgDTO process = process();
+        if (process != null) {
+            GUI.displayImage(process.getImage(), "Latest Median");
+        }
+        mPcs.firePropertyChange("medianNew", null, process);
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         mPcs.addPropertyChangeListener(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         mPcs.removePropertyChangeListener(listener);
     }
@@ -43,6 +58,14 @@ public class MedianFilter {
     }
 
     public void setKsize(int ksize) {
-        this.ksize = ksize;
+        SetterHelper.notNeg(ksize, () -> {
+            this.ksize = ksize;
+            update();
+        });
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
     }
 }

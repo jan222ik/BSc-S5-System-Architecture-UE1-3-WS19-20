@@ -62,4 +62,10 @@ public class Report implements Serializable {
     public void setRadii(float[][] radii) {
         this.radii = radii;
     }
+
+    public Report cloneReport() {
+        Report report = new Report(expected.cloneCoord(), actual.cloneCoord(), inRange, deviationX, deviationY, submatOfDisk.clone());
+        report.setRadii(radii.clone());
+        return report;
+    }
 }

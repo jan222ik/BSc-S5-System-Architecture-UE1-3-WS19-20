@@ -1,5 +1,7 @@
 package component.beans.util;
 
+import java.util.function.Consumer;
+
 public final class SetterHelper {
 
     private SetterHelper() {
@@ -26,6 +28,23 @@ public final class SetterHelper {
     public static void notNeg(double actual, Runnable runIfTrue) {
         if (actual >= 0) {
             runIfTrue.run();
+        }
+    }
+
+    public static void notNull(Object o, Runnable runIfTrue) {
+        if (o != null) {
+            runIfTrue.run();
+        }
+    }
+
+    @SafeVarargs
+    public static void ifClass(Object newValue, Class<?> clazz, Runnable runIfTrue, Consumer<Class<?>>... onClassCast) {
+        if (newValue.getClass().equals(clazz)) {
+            runIfTrue.run();
+        } else {
+            for (Consumer<Class<?>> consumer : onClassCast) {
+                consumer.accept(newValue.getClass());
+            }
         }
     }
 }

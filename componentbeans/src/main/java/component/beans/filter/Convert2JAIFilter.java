@@ -3,10 +3,12 @@ package component.beans.filter;
 import component.beans.dataobj.Coordinate;
 import component.beans.dataobj.Coordinates;
 import component.beans.dataobj.ImgDTO;
+import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
 
 import javax.media.jai.PlanarImage;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class Convert2JAIFilter {
+public class Convert2JAIFilter implements BeanMethods {
 
     private CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
     private final HashMap<Coordinate, Boolean> general = new HashMap<>();
@@ -40,10 +42,24 @@ public class Convert2JAIFilter {
         }
     }
 
+    @Override
+    public void update() {
+        Coordinates process = process();
+        mPcs.firePropertyChange("jiaNew", null, process);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
+        update();
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         mPcs.addPropertyChangeListener(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         mPcs.removePropertyChangeListener(listener);
     }

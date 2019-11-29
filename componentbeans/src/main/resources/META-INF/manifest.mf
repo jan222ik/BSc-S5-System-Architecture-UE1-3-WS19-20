@@ -1,5 +1,3 @@
-Name: component.beans.filter.TestBean.class
-Java-Bean: True
 
 Name: component.beans.filter.Convert2JAIFilter.class
 Java-Bean: True

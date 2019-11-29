@@ -1,6 +1,7 @@
 package component.beans.filter;
 
 import component.beans.dataobj.ImgDTO;
+import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
 import component.beans.util.GUI;
 import component.beans.util.SetterHelper;
@@ -11,11 +12,10 @@ import org.opencv.core.Rect;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 
-public class ROIFilter implements Serializable, PropertyChangeListener {
+public class ROIFilter implements BeanMethods {
 
-    private transient CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
+    private CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
     private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
     private int x = 0;
     private int y = 35;
@@ -44,6 +44,7 @@ public class ROIFilter implements Serializable, PropertyChangeListener {
         update();
     }
 
+    @Override
     public void update() {
         ImgDTO process = process();
         GUI.displayImage(process.getImage(), "Latest ROI");
@@ -94,10 +95,12 @@ public class ROIFilter implements Serializable, PropertyChangeListener {
         });
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         mPcs.addPropertyChangeListener(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         mPcs.removePropertyChangeListener(listener);
     }

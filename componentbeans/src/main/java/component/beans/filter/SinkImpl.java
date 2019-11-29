@@ -2,8 +2,10 @@ package component.beans.filter;
 
 import component.beans.dataobj.Report;
 import component.beans.util.CacheHelper;
+import component.beans.util.SetterHelper;
 import nu.pattern.OpenCV;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -12,8 +14,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class SinkImpl {
+public class SinkImpl implements PropertyChangeListener {
 
     private CacheHelper<List<Report>> cacheHelper = new CacheHelper<>();
     private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
@@ -47,13 +50,6 @@ public class SinkImpl {
         }
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        mPcs.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        mPcs.removePropertyChangeListener(listener);
-    }
 
     public String getOutputPath() {
         return outputPath;
@@ -61,6 +57,7 @@ public class SinkImpl {
 
     public void setOutputPath(String outputPath) {
         this.outputPath = outputPath;
+        write();
     }
 
     public double getAccuracy() {
@@ -68,6 +65,15 @@ public class SinkImpl {
     }
 
     public void setAccuracy(double accuracy) {
-        this.accuracy = accuracy;
+        SetterHelper.notNeg(accuracy, () -> {
+            this.accuracy = accuracy;
+            write();
+        });
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        cacheHelper.setCache((List<Report>) evt.getNewValue(), list -> list.stream().map(Report::cloneReport).collect(Collectors.toList()));
+        write();
     }
 }

@@ -39,5 +39,8 @@ public class Coordinate implements Serializable {
         return "[" + x + "," + y + "]";
     }
 
+    public Coordinate cloneCoord() {
+        return new Coordinate(x, y);
+    }
 }
 

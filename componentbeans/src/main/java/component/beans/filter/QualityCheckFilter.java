@@ -3,22 +3,28 @@ package component.beans.filter;
 import component.beans.dataobj.Coordinate;
 import component.beans.dataobj.Coordinates;
 import component.beans.dataobj.Report;
+import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
+import component.beans.util.ExptCoordReader;
+import component.beans.util.SetterHelper;
 import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class QualityCheckFilter {
+public class QualityCheckFilter implements BeanMethods {
 
-    private CacheHelper<Coordinate[]> cacheHelper = new CacheHelper<>();
+    private CacheHelper<Coordinate[]> cacheHelperExpected = new CacheHelper<>();
     private CacheHelper<Coordinates> cacheHelperCoords = new CacheHelper<>();
     private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
-    private String expectedCoordinatesFile;
+    private String expectedCoordinatesFile = "Z:\\Users\\jan22\\CodeProjects\\S5---System-Architecture\\componentbeans\\src\\main\\resources\\expectedCentroids.txt";
     private double accuracy = 3.0;
 
     public QualityCheckFilter() {
@@ -26,11 +32,16 @@ public class QualityCheckFilter {
     }
 
     private void readFile() {
-
+        File file = new File(expectedCoordinatesFile);
+        if (file.exists()) {
+            List<Coordinate> parse = ExptCoordReader.parse(file);
+            cacheHelperExpected.setCache(parse.toArray(new Coordinate[0]), it -> it);
+            update();
+        }
     }
 
     private List<Report> process() {
-        Coordinate[] expectedCoordinates = cacheHelper.getCache();
+        Coordinate[] expectedCoordinates = cacheHelperExpected.getCache();
         Coordinates coordinates = cacheHelperCoords.getCache();
         LinkedList<Report> reports = new LinkedList<>();
         if (expectedCoordinates != null) {
@@ -62,10 +73,19 @@ public class QualityCheckFilter {
         return reports;
     }
 
+    @Override
+    public void update() {
+        List<Report> process = process();
+        System.out.println(Arrays.toString(process.toArray(new Report[0])));
+        mPcs.firePropertyChange("qaNew", null, process);
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         mPcs.addPropertyChangeListener(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         mPcs.removePropertyChangeListener(listener);
     }
@@ -75,7 +95,10 @@ public class QualityCheckFilter {
     }
 
     public void setExpectedCoordinatesFile(String expectedCoordinatesFile) {
-        this.expectedCoordinatesFile = expectedCoordinatesFile;
+        SetterHelper.notNull(expectedCoordinatesFile, () -> {
+            this.expectedCoordinatesFile = expectedCoordinatesFile;
+            readFile();
+        });
     }
 
     public double getAccuracy() {
@@ -83,6 +106,18 @@ public class QualityCheckFilter {
     }
 
     public void setAccuracy(double accuracy) {
-        this.accuracy = accuracy;
+        SetterHelper.notNeg(accuracy, () -> {
+            this.accuracy = accuracy;
+            update();
+        });
+
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        SetterHelper.ifClass(evt.getNewValue(), Coordinates.class, () -> {
+            cacheHelperCoords.setCache((Coordinates) evt.getNewValue(), Coordinates::cloneCoords);
+            update();
+        });
     }
 }

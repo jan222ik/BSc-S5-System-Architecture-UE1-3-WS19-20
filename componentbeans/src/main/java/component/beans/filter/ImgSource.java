@@ -24,8 +24,8 @@ public class ImgSource extends Canvas implements BeanMethods {
 
 
     public ImgSource() {
+        System.out.println("Constructor: ImgSource in Class: ImgSource");
         OpenCV.loadLocally();
-        System.out.println("New Source");
         update();
     }
 

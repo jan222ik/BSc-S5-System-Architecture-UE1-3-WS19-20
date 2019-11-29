@@ -24,6 +24,7 @@ public class ErodeFilterBean implements BeanMethods {
 
 
     public ErodeFilterBean() {
+        System.out.println("Constructor: ErodeFilterBean in Class: ErodeFilterBean");
         OpenCV.loadLocally();
     }
 
@@ -40,11 +41,13 @@ public class ErodeFilterBean implements BeanMethods {
 
     @Override
     public void update() {
+        System.out.println("Method: update in Class: ErodeFilterBean");
         mPcs.firePropertyChange("erodeNew", null, process());
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Method: propertyChange in Class: ErodeFilterBean");
         cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
         update();
     }

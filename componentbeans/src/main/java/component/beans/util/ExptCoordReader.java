@@ -19,6 +19,7 @@ public final class ExptCoordReader {
     }
 
     public static List<Coordinate> parse(File file) {
+        System.out.println("Method: parse in Class: ExptCoordReader");
         String text = null;
         try {
             text = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
@@ -27,14 +28,16 @@ public final class ExptCoordReader {
         }
         Pattern pattern = Pattern.compile("expected_coordinates=\\[(?<coordlist>(\\(\\d+?,\\d+?\\))(, (\\(\\d+?,\\d+?\\)))*?)]");
 
-        Matcher matcher = pattern.matcher(text);
-        if (matcher.find()) {
-            String allCoordsAsString = matcher.group("coordlist");
-            String[] allCoords = allCoordsAsString.split("\\), ");
-            return Arrays.stream(allCoords).map(s -> s.replace("(", "").replace(")", "")).map(cs -> {
-                String[] values = cs.split(",");
-                return new Coordinate(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
-            }).collect(Collectors.toList());
+        if (text != null) {
+            Matcher matcher = pattern.matcher(text);
+            if (matcher.find()) {
+                String allCoordsAsString = matcher.group("coordlist");
+                String[] allCoords = allCoordsAsString.split("\\), ");
+                return Arrays.stream(allCoords).map(s -> s.replace("(", "").replace(")", "")).map(cs -> {
+                    String[] values = cs.split(",");
+                    return new Coordinate(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
+                }).collect(Collectors.toList());
+            }
         }
         return new LinkedList<>();
     }

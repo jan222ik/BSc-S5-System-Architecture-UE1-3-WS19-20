@@ -22,6 +22,7 @@ public class ThresholdFilter implements BeanMethods {
     private int type = 1;
 
     public ThresholdFilter() {
+        System.out.println("Constructor: ThresholdFilter in Class: ThresholdFilter");
         OpenCV.loadLocally();
     }
 
@@ -37,6 +38,7 @@ public class ThresholdFilter implements BeanMethods {
 
     @Override
     public void update() {
+        System.out.println("Method: update in Class: ThresholdFilter");
         ImgDTO process = process();
         if (process != null) {
             GUI.displayImage(process.getImage(), "Latest Threshold");
@@ -78,6 +80,7 @@ public class ThresholdFilter implements BeanMethods {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Method: propertyChange in Class: ThresholdFilter");
         cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
         update();
     }

@@ -23,6 +23,7 @@ public class ROIFilter implements BeanMethods {
     private int height = 80;
 
     public ROIFilter() {
+        System.out.println("Constructor: ROIFilter in Class: ROIFilter");
         OpenCV.loadLocally();
     }
 
@@ -40,12 +41,14 @@ public class ROIFilter implements BeanMethods {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Method: propertyChange in Class: ROIFilter");
         cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
         update();
     }
 
     @Override
     public void update() {
+        System.out.println("Method: update in Class: ROIFilter");
         ImgDTO process = process();
         GUI.displayImage(process.getImage(), "Latest ROI");
         mPcs.firePropertyChange("roiNew", null, process);

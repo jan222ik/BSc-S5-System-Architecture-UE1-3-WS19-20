@@ -20,6 +20,7 @@ public class MedianFilter implements BeanMethods {
     private int ksize = 19;
 
     public MedianFilter() {
+        System.out.println("Constructor: MedianFilter in Class: MedianFilter");
         OpenCV.loadLocally();
     }
 
@@ -36,6 +37,7 @@ public class MedianFilter implements BeanMethods {
 
     @Override
     public void update() {
+        System.out.println("Method: update in Class: MedianFilter");
         ImgDTO process = process();
         if (process != null) {
             GUI.displayImage(process.getImage(), "Latest Median");
@@ -66,6 +68,7 @@ public class MedianFilter implements BeanMethods {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Method: propertyChange in Class: MedianFilter");
         cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
     }
 }

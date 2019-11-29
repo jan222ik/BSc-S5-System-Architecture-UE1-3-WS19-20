@@ -27,9 +27,11 @@ public class Convert2JAIFilter implements BeanMethods {
     private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
 
     public Convert2JAIFilter() {
+        System.out.println("Constructor: Convert2JAIFilter in Class: Convert2JAIFilter");
     }
 
     private Coordinates process() {
+        System.out.println("Method: process in Class: Convert2JAIFilter");
         ImgDTO entity = cacheHelper.getCache();
         if (entity != null) {
             BufferedImage bufferedImage = entity.getImage();
@@ -44,6 +46,7 @@ public class Convert2JAIFilter implements BeanMethods {
 
     @Override
     public void update() {
+        System.out.println("Method: update in Class: Convert2JAIFilter");
         Coordinates process = process();
         mPcs.firePropertyChange("jiaNew", null, process);
     }

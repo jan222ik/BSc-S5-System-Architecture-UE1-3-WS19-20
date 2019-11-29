@@ -31,6 +31,7 @@ public class FindRadiusFilter implements BeanMethods {
     private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
 
     public FindRadiusFilter() {
+        System.out.println("Constructor: FindRadiusFilter in Class: FindRadiusFilter");
         OpenCV.loadLocally();
     }
 
@@ -81,6 +82,7 @@ public class FindRadiusFilter implements BeanMethods {
 
     @Override
     public void update() {
+        System.out.println("Method: update in Class: FindRadiusFilter");
         List<Report> process = process();
         System.out.println(Arrays.toString(process.toArray(new Report[0])));
         mPcs.firePropertyChange("newRadii", null, process);
@@ -107,6 +109,7 @@ public class FindRadiusFilter implements BeanMethods {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Method: propertyChange in Class: FindRadiusFilter");
         if ((evt.getNewValue() instanceof List)) {
             cacheHelper.setCache((List<Report>) evt.getNewValue(), list -> list.stream().map(Report::cloneReport).collect(Collectors.toList()));
         }

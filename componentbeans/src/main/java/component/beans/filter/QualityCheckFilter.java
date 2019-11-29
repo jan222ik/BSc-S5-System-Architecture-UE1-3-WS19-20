@@ -28,10 +28,12 @@ public class QualityCheckFilter implements BeanMethods {
     private double accuracy = 3.0;
 
     public QualityCheckFilter() {
+        System.out.println("Constructor: QualityCheckFilter in Class: QualityCheckFilter");
         OpenCV.loadLocally();
     }
 
     private void readFile() {
+        System.out.println("Method: readFile in Class: QualityCheckFilter");
         File file = new File(expectedCoordinatesFile);
         if (file.exists()) {
             List<Coordinate> parse = ExptCoordReader.parse(file);
@@ -75,6 +77,7 @@ public class QualityCheckFilter implements BeanMethods {
 
     @Override
     public void update() {
+        System.out.println("Method: update in Class: QualityCheckFilter");
         List<Report> process = process();
         System.out.println(Arrays.toString(process.toArray(new Report[0])));
         mPcs.firePropertyChange("qaNew", null, process);
@@ -115,6 +118,7 @@ public class QualityCheckFilter implements BeanMethods {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Method: propertyChange in Class: QualityCheckFilter");
         SetterHelper.ifClass(evt.getNewValue(), Coordinates.class, () -> {
             cacheHelperCoords.setCache((Coordinates) evt.getNewValue(), Coordinates::cloneCoords);
             update();

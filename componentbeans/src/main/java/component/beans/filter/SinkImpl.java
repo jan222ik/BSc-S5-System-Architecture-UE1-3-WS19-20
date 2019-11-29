@@ -24,10 +24,12 @@ public class SinkImpl implements PropertyChangeListener {
     private double accuracy = 3.0;
 
     public SinkImpl() {
+        System.out.println("Constructor: SinkImpl in Class: SinkImpl");
         OpenCV.loadLocally();
     }
 
     private void write() {
+        System.out.println("Method: write in Class: SinkImpl");
         List<Report> reports = cacheHelper.getCache();
         if (reports != null) {
             File output = new File(outputPath);
@@ -73,6 +75,7 @@ public class SinkImpl implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("Method: propertyChange in Class: SinkImpl");
         cacheHelper.setCache((List<Report>) evt.getNewValue(), list -> list.stream().map(Report::cloneReport).collect(Collectors.toList()));
         write();
     }

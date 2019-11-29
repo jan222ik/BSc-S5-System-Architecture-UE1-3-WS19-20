@@ -80,6 +80,17 @@ public class ImgSource extends Canvas implements BeanMethods {
             g.drawString("ImgSource",0, 0);
             if (temp != null) {
                 g.drawImage(temp, 0, 10, (img, infoflags, x, y, width, height) -> false);
+                Dimension dimension = new Dimension(10 + temp.getHeight(), Math.max(temp.getWidth(), 50));
+                setMinimumSize(dimension);
+                setSize(dimension);
+                setPreferredSize(dimension);
+                setMaximumSize(dimension);
+            } else {
+                Dimension dimension = new Dimension(10, 50);
+                setMinimumSize(dimension);
+                setSize(dimension);
+                setPreferredSize(dimension);
+                setMaximumSize(dimension);
             }
         }
     }

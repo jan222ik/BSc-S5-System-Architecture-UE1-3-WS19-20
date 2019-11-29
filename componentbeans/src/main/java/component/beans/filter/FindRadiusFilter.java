@@ -1,7 +1,9 @@
 package component.beans.filter;
 
+import component.beans.dataobj.Coordinates;
 import component.beans.dataobj.ImgDTO;
 import component.beans.dataobj.Report;
+import component.beans.util.CacheHelper;
 import component.beans.util.GUI;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -18,11 +20,12 @@ import java.util.Random;
 
 public class FindRadiusFilter {
 
-
+    private CacheHelper<List<Report>> cacheHelper = new CacheHelper<>();
     private int threshold = 100;
 
 
-    private List<Report> process(List<Report> entity) {
+    private List<Report> process() {
+        List<Report> entity = cacheHelper.getCache();
         if (entity != null) {
             for (Report report : entity) {
                 Mat submatOfDisk = report.getSubmatOfDisk();
@@ -64,5 +67,13 @@ public class FindRadiusFilter {
             }
         }
         return entity;
+    }
+
+    public int getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
     }
 }

@@ -7,9 +7,6 @@ Java-Bean: True
 Name: component.beans.filter.ErodeFilterBean.class
 Java-Bean: True
 
-Name: component.beans.filter.FilterFirstDisk.class
-Java-Bean: True
-
 Name: component.beans.filter.FindRadiusFilter.class
 Java-Bean: True
 

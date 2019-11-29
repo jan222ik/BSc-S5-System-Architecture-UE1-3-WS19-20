@@ -3,6 +3,7 @@ package component.beans.filter;
 import component.beans.dataobj.Coordinate;
 import component.beans.dataobj.Coordinates;
 import component.beans.dataobj.ImgDTO;
+import component.beans.util.CacheHelper;
 
 import javax.media.jai.PlanarImage;
 import java.awt.image.BufferedImage;
@@ -15,26 +16,26 @@ import java.util.List;
 
 public class Convert2JAIFilter {
 
-    private ImgDTO cache;
+    private CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
+    private final HashMap<Coordinate, Boolean> general = new HashMap<>();
+    private final LinkedList<ArrayList<Coordinate>> figures = new LinkedList<>();
+    private javax.media.jai.PlanarImage image;
 
     public Convert2JAIFilter() {
     }
 
-    private void overwriteImage(ImgDTO imgDTO) {
-        cache = imgDTO.cloneDTO();
+    private Coordinates process() {
+        ImgDTO entity = cacheHelper.getCache();
+        if (entity != null) {
+            BufferedImage bufferedImage = entity.getImage();
+            PlanarImage planarImage = PlanarImage.wrapRenderedImage(bufferedImage);
+            planarImage.setProperty("offsetX", entity.getShiftedX());
+            planarImage.setProperty("offsetY", entity.getShiftedY());
+            return new Coordinates(processInternal(planarImage), entity);
+        } else {
+            return null;
+        }
     }
-
-    private Coordinates process(ImgDTO entity) {
-        BufferedImage bufferedImage = entity.getImage();
-        PlanarImage planarImage = PlanarImage.wrapRenderedImage(bufferedImage);
-        planarImage.setProperty("offsetX", entity.getShiftedX());
-        planarImage.setProperty("offsetY", entity.getShiftedY());
-        return new Coordinates(processInternal(planarImage), entity);
-    }
-
-    private final HashMap<Coordinate, Boolean> general = new HashMap<>();
-    private final LinkedList<ArrayList<Coordinate>> figures = new LinkedList<>();
-    private javax.media.jai.PlanarImage image;
 
 
     private List<Coordinate> processInternal(PlanarImage planarImage) {

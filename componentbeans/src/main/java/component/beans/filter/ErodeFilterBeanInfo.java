@@ -2,7 +2,7 @@ package component.beans.filter;
 
 import java.beans.*;
 
-public class ErodeFilterBeanBeanInfo extends SimpleBeanInfo {
+public class ErodeFilterBeanInfo extends SimpleBeanInfo {
 
     private static final Class beanClass;
 
@@ -10,7 +10,7 @@ public class ErodeFilterBeanBeanInfo extends SimpleBeanInfo {
         beanClass = ErodeFilterBean.class;
     }
 
-    public ErodeFilterBeanBeanInfo() {
+    public ErodeFilterBeanInfo() {
     }
 
     @Override

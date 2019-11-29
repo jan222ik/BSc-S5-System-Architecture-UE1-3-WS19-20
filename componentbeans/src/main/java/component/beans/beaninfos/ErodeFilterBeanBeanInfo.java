@@ -1,7 +1,5 @@
 package component.beans.beaninfos;
 
-import component.beans.filter.ErodeFilterBean;
-
 import java.beans.IntrospectionException;
 import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
@@ -12,7 +10,7 @@ public class ErodeFilterBeanBeanInfo extends SimpleBeanInfo {
     private static final Class beanClass;
 
     static {
-        beanClass = ErodeFilterBean.class;
+        beanClass = ErodeFilterBeand.class;
     }
 
     public ErodeFilterBeanBeanInfo() {

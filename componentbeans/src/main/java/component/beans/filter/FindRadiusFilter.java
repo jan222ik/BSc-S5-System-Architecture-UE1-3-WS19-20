@@ -107,8 +107,8 @@ public class FindRadiusFilter implements BeanMethods {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ((evt.getNewValue() instanceof List)) {
+        SetterHelper.ifClass(evt.getNewValue(), List.class, () -> {
             cacheHelper.setCache((List<Report>) evt.getNewValue(), list -> list.stream().map(Report::cloneReport).collect(Collectors.toList()));
-        }
+        });
     }
 }

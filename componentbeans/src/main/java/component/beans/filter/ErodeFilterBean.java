@@ -45,8 +45,10 @@ public class ErodeFilterBean implements BeanMethods {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
-        update();
+        SetterHelper.ifClass(evt.getNewValue(), ImgDTO.class, () -> {
+            cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
+            update();
+        });
     }
 
     public int getShapeType() {

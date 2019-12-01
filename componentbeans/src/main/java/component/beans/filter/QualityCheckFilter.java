@@ -7,7 +7,6 @@ import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
 import component.beans.util.ExptCoordReader;
 import component.beans.util.SetterHelper;
-import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
@@ -29,20 +28,24 @@ public class QualityCheckFilter implements BeanMethods {
 
     public QualityCheckFilter() {
         System.out.println("Constructor: QualityCheckFilter in Class: QualityCheckFilter");
-        OpenCV.loadLocally();
+        SetterHelper.initOpenCV();
+        readFile(false);
     }
 
-    private void readFile() {
+    private void readFile(boolean update) {
         System.out.println("Method: readFile in Class: QualityCheckFilter");
         File file = new File(expectedCoordinatesFile);
         if (file.exists()) {
             List<Coordinate> parse = ExptCoordReader.parse(file);
             cacheHelperExpected.setCache(parse.toArray(new Coordinate[0]), it -> it);
-            update();
+            if (update) {
+                update();
+            }
         }
     }
 
     private List<Report> process() {
+        System.out.println("Method: process in Class: QualityCheckFilter");
         Coordinate[] expectedCoordinates = cacheHelperExpected.getCache();
         Coordinates coordinates = cacheHelperCoords.getCache();
         LinkedList<Report> reports = new LinkedList<>();
@@ -62,8 +65,13 @@ public class QualityCheckFilter implements BeanMethods {
 
                 inRange = (Math.abs(deltaX) < accuracy && Math.abs(deltaY) < accuracy);
 
-                int x = Math.max(0, current.x - size / 2);
-                int y = Math.max(0, current.y - size / 2 - 30);
+                System.out.println("currentX = " + current.x);
+                System.out.println("currentY = " + current.y);
+                System.out.println("deltaY = " + deltaY);
+                System.out.println("deltaY = " + deltaY);
+
+                int x = Math.max(0, current.x - size / 2 - coordinates.getImgDTO().getShiftedX());
+                int y = Math.max(0, current.y - size / 2 - coordinates.getImgDTO().getShiftedY());
                 Rect roi = new Rect(x, y, Math.min(size, imgWidth - x), Math.min(size, imgHeight - y));
 
                 System.out.println(i + " current = " + current + " -> roi = " + roi);
@@ -100,7 +108,7 @@ public class QualityCheckFilter implements BeanMethods {
     public void setExpectedCoordinatesFile(String expectedCoordinatesFile) {
         SetterHelper.notNull(expectedCoordinatesFile, () -> {
             this.expectedCoordinatesFile = expectedCoordinatesFile;
-            readFile();
+            readFile(true);
         });
     }
 
@@ -119,7 +127,9 @@ public class QualityCheckFilter implements BeanMethods {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Method: propertyChange in Class: QualityCheckFilter");
-        SetterHelper.ifClass(evt.getNewValue(), Coordinates.class, () -> {
+        SetterHelper.ifNullableClass(evt.getNewValue(), Coordinates.class,() -> {
+            mPcs.firePropertyChange("qaNew", null, null);
+        }, () -> {
             cacheHelperCoords.setCache((Coordinates) evt.getNewValue(), Coordinates::cloneCoords);
             update();
         });

@@ -65,7 +65,9 @@ public class Report implements Serializable {
 
     public Report cloneReport() {
         Report report = new Report(expected.cloneCoord(), actual.cloneCoord(), inRange, deviationX, deviationY, submatOfDisk.clone());
-        report.setRadii(radii.clone());
+        if (radii != null) {
+            report.setRadii(radii.clone());
+        }
         return report;
     }
 }

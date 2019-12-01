@@ -3,29 +3,27 @@ package component.beans.filter;
 import component.beans.dataobj.Report;
 import component.beans.util.CacheHelper;
 import component.beans.util.SetterHelper;
-import nu.pattern.OpenCV;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SinkImpl implements PropertyChangeListener {
 
     private CacheHelper<List<Report>> cacheHelper = new CacheHelper<>();
-    private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
-    private String outputPath;
+    private String outputPath = "Z:\\Users\\jan22\\CodeProjects\\S5---System-Architecture\\componentbeans\\target\\report.txt";
     private double accuracy = 3.0;
 
     public SinkImpl() {
         System.out.println("Constructor: SinkImpl in Class: SinkImpl");
-        OpenCV.loadLocally();
+        SetterHelper.initOpenCV();
     }
 
     private void write() {
@@ -76,7 +74,9 @@ public class SinkImpl implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Method: propertyChange in Class: SinkImpl");
-        SetterHelper.ifClass(evt.getNewValue(), List.class, () -> {
+        System.out.println(evt.getNewValue().getClass());
+        SetterHelper.ifNullableClass(evt.getNewValue(), LinkedList.class, () -> { //No Explicit Nullhandle
+        }, () -> {
             cacheHelper.setCache((List<Report>) evt.getNewValue(), list -> list.stream().map(Report::cloneReport).collect(Collectors.toList()));
             write();
         });

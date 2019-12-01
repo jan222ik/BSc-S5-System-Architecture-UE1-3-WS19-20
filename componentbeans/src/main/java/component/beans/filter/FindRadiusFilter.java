@@ -6,7 +6,6 @@ import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
 import component.beans.util.GUI;
 import component.beans.util.SetterHelper;
-import nu.pattern.OpenCV;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -20,6 +19,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -32,12 +32,13 @@ public class FindRadiusFilter implements BeanMethods {
 
     public FindRadiusFilter() {
         System.out.println("Constructor: FindRadiusFilter in Class: FindRadiusFilter");
-        OpenCV.loadLocally();
+        SetterHelper.initOpenCV();
     }
 
     private List<Report> process() {
         List<Report> entity = cacheHelper.getCache();
         if (entity != null) {
+            entity = entity.stream().map(Report::cloneReport).collect(Collectors.toList());
             for (Report report : entity) {
                 Mat submatOfDisk = report.getSubmatOfDisk();
                 Mat cannyOutput = new Mat();
@@ -85,7 +86,7 @@ public class FindRadiusFilter implements BeanMethods {
         System.out.println("Method: update in Class: FindRadiusFilter");
         List<Report> process = process();
         System.out.println(Arrays.toString(process.toArray(new Report[0])));
-        mPcs.firePropertyChange("newRadii", null, process);
+        mPcs.firePropertyChange("newRadii", null, new LinkedList<>(process));
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -110,8 +111,12 @@ public class FindRadiusFilter implements BeanMethods {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Method: propertyChange in Class: FindRadiusFilter");
-        SetterHelper.ifClass(evt.getNewValue(), List.class, () -> {
+        System.out.println(evt.getNewValue().getClass());
+        SetterHelper.ifNullableClass(evt.getNewValue(), LinkedList.class,() -> {
+            mPcs.firePropertyChange("newRadii", null, null);
+        }, () -> {
             cacheHelper.setCache((List<Report>) evt.getNewValue(), list -> list.stream().map(Report::cloneReport).collect(Collectors.toList()));
+            update();
         });
     }
 }

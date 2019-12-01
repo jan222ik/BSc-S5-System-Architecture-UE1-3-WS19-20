@@ -25,3 +25,6 @@ Java-Bean: True
 
 Name: component.beans.filter.ThresholdFilter.class
 Java-Bean: True
+
+Name: component.beans.filter.PopUpDisplay.class
+Java-Bean: True

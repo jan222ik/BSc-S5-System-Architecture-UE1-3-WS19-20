@@ -3,9 +3,7 @@ package component.beans.filter;
 import component.beans.dataobj.ImgDTO;
 import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
-import component.beans.util.GUI;
 import component.beans.util.SetterHelper;
-import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
@@ -23,12 +21,13 @@ public class ThresholdFilter implements BeanMethods {
 
     public ThresholdFilter() {
         System.out.println("Constructor: ThresholdFilter in Class: ThresholdFilter");
-        OpenCV.loadLocally();
+        SetterHelper.initOpenCV();
     }
 
     private ImgDTO process() {
         ImgDTO entity = cacheHelper.getCache();
         if (entity != null) {
+            entity = entity.cloneDTO();
             Mat dst = new Mat();
             Imgproc.threshold(entity.getMat(), dst, thresh, 255, type);
             entity.setMat(dst);
@@ -40,9 +39,6 @@ public class ThresholdFilter implements BeanMethods {
     public void update() {
         System.out.println("Method: update in Class: ThresholdFilter");
         ImgDTO process = process();
-        if (process != null) {
-            GUI.displayImage(process.getImage(), "Latest Threshold");
-        }
         mPcs.firePropertyChange("thresholdNew", null, process);
     }
 
@@ -81,7 +77,9 @@ public class ThresholdFilter implements BeanMethods {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Method: propertyChange in Class: ThresholdFilter");
-        SetterHelper.ifClass(evt.getNewValue(), ImgDTO.class, () -> {
+        SetterHelper.ifNullableClass(evt.getNewValue(), ImgDTO.class,() -> {
+            mPcs.firePropertyChange("thresholdNew", null, null);
+        }, () -> {
             cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
             update();
         });

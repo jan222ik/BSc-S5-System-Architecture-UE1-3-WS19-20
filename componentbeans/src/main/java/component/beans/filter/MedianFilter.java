@@ -3,9 +3,7 @@ package component.beans.filter;
 import component.beans.dataobj.ImgDTO;
 import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
-import component.beans.util.GUI;
 import component.beans.util.SetterHelper;
-import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
@@ -21,13 +19,14 @@ public class MedianFilter implements BeanMethods {
 
     public MedianFilter() {
         System.out.println("Constructor: MedianFilter in Class: MedianFilter");
-        OpenCV.loadLocally();
+        SetterHelper.initOpenCV();
     }
 
 
     private ImgDTO process() {
         ImgDTO entity = cacheHelper.getCache();
         if (entity != null) {
+            entity = entity.cloneDTO();
             Mat dst = new Mat();
             Imgproc.medianBlur(entity.getMat(), dst, ksize);
             entity.setMat(dst);
@@ -39,9 +38,6 @@ public class MedianFilter implements BeanMethods {
     public void update() {
         System.out.println("Method: update in Class: MedianFilter");
         ImgDTO process = process();
-        if (process != null) {
-            GUI.displayImage(process.getImage(), "Latest Median");
-        }
         mPcs.firePropertyChange("medianNew", null, process);
     }
 
@@ -69,7 +65,9 @@ public class MedianFilter implements BeanMethods {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Method: propertyChange in Class: MedianFilter");
-        SetterHelper.ifClass(evt.getNewValue(), ImgDTO.class, () -> {
+        SetterHelper.ifNullableClass(evt.getNewValue(), ImgDTO.class, () -> {
+            mPcs.firePropertyChange("medianNew", null, null);
+        }, () -> {
             cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
             update();
         });

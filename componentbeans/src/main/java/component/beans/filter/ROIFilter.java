@@ -3,9 +3,7 @@ package component.beans.filter;
 import component.beans.dataobj.ImgDTO;
 import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
-import component.beans.util.GUI;
 import component.beans.util.SetterHelper;
-import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
@@ -17,19 +15,20 @@ public class ROIFilter implements BeanMethods {
 
     private CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
     private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
-    private int x = 0;
+    private int x = 30;
     private int y = 35;
-    private int width = 448;
+    private int width = 418;
     private int height = 80;
 
     public ROIFilter() {
         System.out.println("Constructor: ROIFilter in Class: ROIFilter");
-        OpenCV.loadLocally();
+        SetterHelper.initOpenCV();
     }
 
     protected ImgDTO process() {
         ImgDTO entity = cacheHelper.getCache();
         if (entity != null) {
+            entity = entity.cloneDTO();
             Rect rect = new Rect(x, y, width, height);
             Mat cropped = entity.getMat().submat(rect);
             entity.setMat(cropped);
@@ -42,7 +41,9 @@ public class ROIFilter implements BeanMethods {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Method: propertyChange in Class: ROIFilter");
-        SetterHelper.ifClass(evt.getNewValue(), ImgDTO.class, () -> {
+        SetterHelper.ifNullableClass(evt.getNewValue(), ImgDTO.class,() -> {
+            mPcs.firePropertyChange("roiNew", null, null);
+        }, () -> {
             cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
             update();
         });
@@ -52,7 +53,6 @@ public class ROIFilter implements BeanMethods {
     public void update() {
         System.out.println("Method: update in Class: ROIFilter");
         ImgDTO process = process();
-        GUI.displayImage(process.getImage(), "Latest ROI");
         mPcs.firePropertyChange("roiNew", null, process);
     }
 

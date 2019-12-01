@@ -22,19 +22,23 @@ import java.util.List;
 public class Convert2JAIFilter implements BeanMethods {
 
     private CacheHelper<ImgDTO> cacheHelper = new CacheHelper<>();
-    private final HashMap<Coordinate, Boolean> general = new HashMap<>();
-    private final LinkedList<ArrayList<Coordinate>> figures = new LinkedList<>();
+    private HashMap<Coordinate, Boolean> general = new HashMap<>();
+    private LinkedList<ArrayList<Coordinate>> figures = new LinkedList<>();
     private javax.media.jai.PlanarImage image;
     private PropertyChangeSupport mPcs = new PropertyChangeSupport(this);
 
     public Convert2JAIFilter() {
         System.out.println("Constructor: Convert2JAIFilter in Class: Convert2JAIFilter");
+        SetterHelper.initOpenCV();
     }
 
     private Coordinates process() {
         System.out.println("Method: process in Class: Convert2JAIFilter");
         ImgDTO entity = cacheHelper.getCache();
         if (entity != null) {
+            general = new HashMap<>();
+            figures = new LinkedList<>();
+            image = null;
             BufferedImage bufferedImage = entity.getImage();
             PlanarImage planarImage = PlanarImage.wrapRenderedImage(bufferedImage);
             planarImage.setProperty("offsetX", entity.getShiftedX());
@@ -54,7 +58,9 @@ public class Convert2JAIFilter implements BeanMethods {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        SetterHelper.ifClass(evt.getNewValue(), ImgDTO.class, () -> {
+        SetterHelper.ifNullableClass(evt.getNewValue(), ImgDTO.class, () -> {
+            mPcs.firePropertyChange("jiaNew", null, null);
+        }, () -> {
             cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
             update();
         });

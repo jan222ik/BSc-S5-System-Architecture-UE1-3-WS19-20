@@ -4,7 +4,6 @@ import component.beans.dataobj.ImgDTO;
 import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
 import component.beans.util.SetterHelper;
-import nu.pattern.OpenCV;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Size;
@@ -13,7 +12,6 @@ import org.opencv.imgproc.Imgproc;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 
 public class ErodeFilterBean implements BeanMethods {
 
@@ -25,12 +23,13 @@ public class ErodeFilterBean implements BeanMethods {
 
     public ErodeFilterBean() {
         System.out.println("Constructor: ErodeFilterBean in Class: ErodeFilterBean");
-        OpenCV.loadLocally();
+        SetterHelper.initOpenCV();
     }
 
     private ImgDTO process() {
         ImgDTO entity = cacheHelper.getCache();
         if (entity != null) {
+            entity = entity.cloneDTO();
             Mat element = Imgproc.getStructuringElement(shapeType, new Size(2 * kernalSize + 1D, 2 * kernalSize + 1D), new Point(kernalSize, kernalSize));
             Mat dst = new Mat();
             Imgproc.erode(entity.getMat(), dst, element);
@@ -48,7 +47,9 @@ public class ErodeFilterBean implements BeanMethods {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Method: propertyChange in Class: ErodeFilterBean");
-        SetterHelper.ifClass(evt.getNewValue(), ImgDTO.class, () -> {
+        SetterHelper.ifNullableClass(evt.getNewValue(), ImgDTO.class,() -> {
+            mPcs.firePropertyChange("erodeNew", null, null);
+        }, () -> {
             cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
             update();
         });
@@ -81,6 +82,7 @@ public class ErodeFilterBean implements BeanMethods {
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         mPcs.addPropertyChangeListener(listener);
     }
+
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         mPcs.removePropertyChangeListener(listener);

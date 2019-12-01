@@ -1,10 +1,23 @@
 package component.beans.util;
 
+
+
+import nu.pattern.OpenCV;
+
 import java.util.function.Consumer;
 
 public final class SetterHelper {
 
     private SetterHelper() {
+    }
+
+    private static boolean isInitialized = false;
+
+    public static void initOpenCV() {
+        if (!isInitialized) {
+            OpenCV.loadLocally();
+            isInitialized = true;
+        }
     }
 
     public static void between(int actual, int lower, int upper, Runnable runIfTrue) {
@@ -38,7 +51,11 @@ public final class SetterHelper {
     }
 
     @SafeVarargs
-    public static void ifClass(Object newValue, Class<?> clazz, Runnable runIfTrue, Consumer<Class<?>>... onClassCast) {
+    public static void ifNullableClass(Object newValue, Class<?> clazz, Runnable onNull, Runnable runIfTrue, Consumer<Class<?>>... onClassCast) {
+        if (newValue == null) {
+            onNull.run();
+            return;
+        }
         if (newValue.getClass().equals(clazz)) {
             runIfTrue.run();
         } else {

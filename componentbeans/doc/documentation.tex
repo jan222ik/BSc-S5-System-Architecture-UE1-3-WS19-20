@@ -36,8 +36,8 @@ textwidth=190mm
 \maketitle
 
 \chapter{Start & Bean Properties}
-To start the program, simply drop the jar into the jars folder of the beanbox. Upon starting said beanbox, the Beans
-should now be visible. Since the jar is a fat-jar, no libraries need to be added.
+To start the program, simply drop the jar into the jars folder of the beanbox. \newline Upon starting said beanbox, the Beans
+should now be visible. \newline Since the jar is a fat-jar, no libraries need to be added.
 \begin{table}[H]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|l|l|l|}
@@ -60,11 +60,13 @@ ThresholdFilter & thresh & Threshold for filtering & 30                         
 ThresholdFilter & type & Type of threshold-filter used & 1                                                           \\ \hline
 \end{tabular}%
 }
-\caption{Table of command-line arguments}
+\caption{Table of bean-properties}
 \label{tab:args-table}
 \end{table}
-\chapter{In-Depth Description}
-
-
-\printbibliography
+\chapter{Usage}
+    To connect to beans to each other, use the "Edit"-tab from the BeanBox menu-bar and select Events -> propertyChanged
+    ->propertyChanged. \newline Connect the red line to the bean you wish to connect to and select "propertyChanged" again.\newline
+    When connecting to the PopUpDisplay-Bean, only certain filters make sense, because not all filters return images.\newline
+    Connecting to ImgSource, ROIFilter, ThresholdFilter, MedianFilter and ErodeFilterBean will display the processed
+    image.
 \end{document}

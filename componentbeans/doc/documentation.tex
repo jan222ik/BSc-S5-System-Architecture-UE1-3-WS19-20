@@ -33,40 +33,40 @@ textwidth=190mm
 \author{Matthias Rupp, Janik Mayr}
 % Document
 \begin{document}
-\maketitle
+    \maketitle
 
-\chapter{Start & Bean Properties}
-To start the program, simply drop the jar into the jars folder of the beanbox. \newline Upon starting said beanbox, the Beans
-should now be visible. \newline Since the jar is a fat-jar, no libraries need to be added.
-\begin{table}[H]
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|l|}
-\hline
-BeanName & PropertyName & Definition & Default                                                        \\ \hline
-ErodeFilterBean  & shapeType & Shape used for Erode Filter, Range  & 0      \\ \hline
-ErodeFilterBean  & kernalSize &  KernelSize used for the Erode Filter & 2                                                              \\ \hline
-FindRadiusFilter  & threshold & Threshold for radius finding & 100                                                          \\ \hline
-ImgSource & imgPath & Path from where the source is supposed to load the image & /) \\ \hline
-MedianFilter & kSize & kernelSize for MedianFilter & 19                       \\ \hline
-QualityCheckFilter & expectedCoordinatesFile & Path to the file with the expected coordinates &  /                     \\ \hline
-QualityCheckFilter & accuracy & Accuracy for comparison between actual and expected coordinates & 3.0                                                              \\ \hline
-ROIFilter & x & Distance from starting coordinate (0|0) to start of ROI in x-direction & 0                                                              \\ \hline
-ROIFilter & y & Distance from starting coordinate (0|0) to start of ROI in y-direction & 35                                                             \\ \hline
-ROIFilter & width & Width of the ROI-Rectangle & 448                                                             \\ \hline
-ROIFilter & height & Height of the ROI-Rectangle & 80                                                             \\ \hline
-SinkImpl & outputPath & Path to where the Sink writes the Report & /                                                            \\ \hline
-SinkImpl & accuracy & Accuracy that is written into the report (should match QualityCheckFilter) & 3.0                                                             \\ \hline
-ThresholdFilter & thresh & Threshold for filtering & 30                                                          \\ \hline
-ThresholdFilter & type & Type of threshold-filter used & 1                                                           \\ \hline
-\end{tabular}%
-}
-\caption{Table of bean-properties}
-\label{tab:args-table}
-\end{table}
-\chapter{Usage}
+    \chapter*{Start and Bean Properties}
+    To start the program, simply drop the jar into the jars folder of the beanbox. \newline Upon starting said beanbox, the Beans
+    should now be visible. \newline
+    Since the jar is a fat-jar, no libraries need to be added.
+    \begin{table}[H]
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|l|l|l|l|}
+            \hline
+            BeanName & PropertyName & Definition & Default                                                        \\ \hline
+            ErodeFilterBean & shapeType & Shape used for Erode Filter, Range & 0      \\ \hline
+            ErodeFilterBean & kernalSize & KernelSize used for the Erode Filter & 2                                                              \\ \hline
+            FindRadiusFilter & threshold & Threshold for radius finding & 100                                                          \\ \hline
+            ImgSource & imgPath & Path from where the source is supposed to load the image & /) \\ \hline
+            MedianFilter & kSize & kernelSize for MedianFilter & 19                       \\ \hline
+            QualityCheckFilter & expectedCoordinatesFile & Path to the file with the expected coordinates & /                     \\ \hline
+            QualityCheckFilter & accuracy & Accuracy for comparison between actual and expected coordinates & 3.0                                                              \\ \hline
+            ROIFilter & x & Distance from starting coordinate (0|0) to start of ROI in x-direction & 30                                                             \\ \hline
+            ROIFilter & y & Distance from starting coordinate (0|0) to start of ROI in y-direction & 35                                                             \\ \hline
+            ROIFilter & width & Width of the ROI-Rectangle & 418                                                             \\ \hline
+            ROIFilter & height & Height of the ROI-Rectangle & 80                                                             \\ \hline
+            SinkImpl & outputPath & Path to where the Sink writes the Report & /                                                            \\ \hline
+            SinkImpl & accuracy & Accuracy that is written into the report (should match QualityCheckFilter) & 3.0                                                             \\ \hline
+            ThresholdFilter & thresh & Threshold for filtering & 30                                                          \\ \hline
+            ThresholdFilter & type & Type of threshold-filter used & 1                                                           \\ \hline
+        \end{tabular}%
+        }
+        \caption{Table of bean-properties}
+        \label{tab:args-table}
+    \end{table}
+    \chapter*{Usage}
     To connect to beans to each other, use the "Edit"-tab from the BeanBox menu-bar and select Events -> propertyChanged
     ->propertyChanged. \newline Connect the red line to the bean you wish to connect to and select "propertyChanged" again.\newline
-    When connecting to the PopUpDisplay-Bean, only certain filters make sense, because not all filters return images.\newline
-    Connecting to ImgSource, ROIFilter, ThresholdFilter, MedianFilter and ErodeFilterBean will display the processed
-    image.
+    When connecting to the PopUpDisplay-Bean, only certain filters make sense, because not all filters return images, but if no image is found Object::toString is displayed.\newline
+    Connecting to ImgSource, ROIFilter, ThresholdFilter, MedianFilter and ErodeFilterBean will display the processed image.
 \end{document}

@@ -69,6 +69,9 @@ public class MedianFilter implements BeanMethods {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Method: propertyChange in Class: MedianFilter");
-        cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
+        SetterHelper.ifClass(evt.getNewValue(), ImgDTO.class, () -> {
+            cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
+            update();
+        });
     }
 }

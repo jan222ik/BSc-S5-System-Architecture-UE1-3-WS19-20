@@ -5,6 +5,7 @@ import component.beans.dataobj.Coordinates;
 import component.beans.dataobj.ImgDTO;
 import component.beans.util.BeanMethods;
 import component.beans.util.CacheHelper;
+import component.beans.util.SetterHelper;
 
 import javax.media.jai.PlanarImage;
 import java.awt.image.BufferedImage;
@@ -53,8 +54,10 @@ public class Convert2JAIFilter implements BeanMethods {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
-        update();
+        SetterHelper.ifClass(evt.getNewValue(), ImgDTO.class, () -> {
+            cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
+            update();
+        });
     }
 
     @Override

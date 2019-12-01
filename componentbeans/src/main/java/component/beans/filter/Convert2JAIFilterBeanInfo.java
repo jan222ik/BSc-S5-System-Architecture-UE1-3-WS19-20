@@ -1,17 +1,26 @@
 package component.beans.filter;
 
-import java.beans.BeanDescriptor;
-import java.beans.EventSetDescriptor;
+import java.beans.MethodDescriptor;
+import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
 
 public class Convert2JAIFilterBeanInfo extends SimpleBeanInfo {
-    @Override
-    public BeanDescriptor getBeanDescriptor() {
-        return super.getBeanDescriptor();
+    private static final Class beanClass;
+
+    static {
+        beanClass = Convert2JAIFilter.class;
+    }
+
+    public Convert2JAIFilterBeanInfo() {
     }
 
     @Override
-    public EventSetDescriptor[] getEventSetDescriptors() {
-        return super.getEventSetDescriptors();
+    public PropertyDescriptor[] getPropertyDescriptors() {
+        return null;
+    }
+
+    @Override
+    public MethodDescriptor[] getMethodDescriptors() {
+        return null;
     }
 }

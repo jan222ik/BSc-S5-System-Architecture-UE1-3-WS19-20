@@ -81,7 +81,9 @@ public class ThresholdFilter implements BeanMethods {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Method: propertyChange in Class: ThresholdFilter");
-        cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
-        update();
+        SetterHelper.ifClass(evt.getNewValue(), ImgDTO.class, () -> {
+            cacheHelper.setCache((ImgDTO) evt.getNewValue(), ImgDTO::cloneDTO);
+            update();
+        });
     }
 }

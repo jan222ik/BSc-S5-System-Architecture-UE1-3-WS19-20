@@ -1,6 +1,9 @@
 package component.beans.filter;
 
-import java.beans.*;
+import java.beans.IntrospectionException;
+import java.beans.MethodDescriptor;
+import java.beans.PropertyDescriptor;
+import java.beans.SimpleBeanInfo;
 
 public class ErodeFilterBeanInfo extends SimpleBeanInfo {
 
@@ -29,7 +32,7 @@ public class ErodeFilterBeanInfo extends SimpleBeanInfo {
 
     @Override
     public MethodDescriptor[] getMethodDescriptors() {
-       return null;
+        return null;
     }
 
 }
